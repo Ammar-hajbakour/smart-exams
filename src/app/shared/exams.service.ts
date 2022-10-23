@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, doc, setDoc, collectionData, deleteDoc, docData } from '@angular/fire/firestore';
-import { Subject, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { Exam } from '../models/exam.model';
 
 @Injectable({
@@ -8,37 +8,40 @@ import { Exam } from '../models/exam.model';
 })
 export class ExamsService {
 
-  private readonly collection = "exams"
+  private readonly collectionName = "exams"
   constructor(private store: Firestore) { }
 
-  getExamById(examId: string): Promise<Partial<Exam>> {
-    return Promise.resolve({ ...(new Exam('', '')), id: examId });
-  }
 
   save(exam: Partial<Exam>): Promise<Partial<Exam>> {
-    return Promise.resolve(exam);
+    if(exam.id) return this.updateExam(exam)
+    else return this.createExam(exam)
+    
   }
 
-  createExam(subject: Exam) {
-    let subjectsRef = collection(this.store, 'exams')
-    return addDoc(subjectsRef, subject)
+  private createExam(exam: Partial<Exam>) {
+    let subjectsRef = collection(this.store, this.collectionName)
+    return addDoc(subjectsRef, exam)
   }
-  async updateSubject(newSubject: Subject, id: string) {
-    let subjectRef = doc(this.store, "subjects/" + id)
-    return await setDoc(subjectRef, newSubject)
+  private async updateExam(exam: Partial<Exam>) {
+    const {id} = exam
+    const e = {...exam} as any
+    delete e.id
+    let examRef = doc(this.store, `${this.collectionName}/${id}`)
+    await setDoc(examRef, e)
+    return exam
   }
 
-  async getExams() {
-    let subjectsRef = collection(this.store, 'subjects')
-    return await firstValueFrom(collectionData(subjectsRef, { idField: 'id' })) as Subject[]
-
+  async getExams(filter?:any) {
+    let subjectsRef = collection(this.store, this.collectionName)
+    return await firstValueFrom(collectionData(subjectsRef, { idField: 'id' })) as Exam[]
   }
-  async deleteSubject(id: string) {
-    let subjectRef = doc(this.store, "subjects/" + id)
+  async deleteExam(id: string) {
+    let subjectRef = doc(this.store, `${this.collectionName}/${id}`)
     return await deleteDoc(subjectRef)
   }
-  async getSubjectById(id: string) {
-    let subjectRef = doc(this.store, "subjects/" + id)
-    return await firstValueFrom(docData(subjectRef)) as Subject
+  async getExamById(id: string) {
+    let subjectRef = doc(this.store, `${this.collectionName}/${id}`)
+    const exam = await firstValueFrom(docData(subjectRef)) as Exam
+    return exam
   }
 }

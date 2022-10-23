@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { LanguageService } from '@upupa/language';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { Exam } from 'src/app/models/exam.model';
+import { ExamsService } from 'src/app/shared/exams.service';
 import { AuthService } from '../../membership/services/auth.service';
 import { ExamFormComponent } from '../exam-form/exam-form.component';
 
@@ -16,9 +19,16 @@ export class InstructorExamsPageComponent implements OnInit {
 
   exams = new BehaviorSubject<Partial<Exam>[]>([])
 
-  constructor(public dialog: MatDialog, private auth: AuthService) { }
+  constructor(
+    private examsService: ExamsService,
+    private router: Router,
+    private ls: LanguageService,
+    public dialog: MatDialog, private auth: AuthService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    const _exams = await this.examsService.getExams()
+    this.exams.next(_exams)
+
   }
 
 
@@ -29,6 +39,7 @@ export class InstructorExamsPageComponent implements OnInit {
 
     if (result) {
       //after close dialog refresh list
+
       this.exams.next([...this.exams.value, result])
     }
   }
@@ -36,5 +47,9 @@ export class InstructorExamsPageComponent implements OnInit {
   onAction(e: { action: string, element: Partial<Exam> }) {
     console.log(e);
 
+    switch (e.action) {
+      case 'build': this.router.navigate(['/', this.ls.language, 'instructor', 'build', e.element.id]);
+        break;
+    }
   }
 }

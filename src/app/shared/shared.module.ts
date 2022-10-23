@@ -6,7 +6,6 @@ import { MatrialCommon } from './material-modules.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ResponsesListComponent } from './responses-list/responses-list.component';
 import { FilterComponent } from '../components/filter/filter.component';
-import { ExamBuilderComponent } from '../components/exam-builder/exam-builder.component';
 import { ExamsListComponent } from './exams-list/exams-list.component';
 
 const imports = [CommonModule,
@@ -15,7 +14,7 @@ const imports = [CommonModule,
   ReactiveFormsModule,
   ...MatrialCommon]
 
-const declarations = [ResponsesListComponent, FilterComponent, ExamBuilderComponent, ExamsListComponent]
+const declarations = [ResponsesListComponent, FilterComponent, ExamsListComponent]
 @NgModule({
   declarations: [...declarations],
   imports: [...imports],

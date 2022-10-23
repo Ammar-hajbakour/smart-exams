@@ -6,13 +6,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { InstructorLayoutComponent } from './instructor-layout/instructor-layout.component';
 import { InstructorExamsPageComponent } from './instructor-exams-page/instructor-exams-page.component';
 import { ExamFormComponent } from './exam-form/exam-form.component';
+import { ExamBuilderComponent } from './exam-builder/exam-builder.component';
 
 
 @NgModule({
   declarations: [
     InstructorLayoutComponent,
     InstructorExamsPageComponent,
-    ExamFormComponent
+    ExamFormComponent,
+    ExamBuilderComponent
   ],
   imports: [
     SharedModule,
