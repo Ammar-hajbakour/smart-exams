@@ -1,0 +1,33 @@
+<div class="login">
+    <div class="login-form">
+        <form [formGroup]="loginForm" (ngSubmit)="submit()">
+            <h2>{{'Log in' | text}}</h2>
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>{{'Email' | text}}</mat-label>
+                    <input matInput type="email" formControlName="email">
+                    <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">
+                        {{'Email Error' | text}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>{{'Password' | text}}</mat-label>
+                    <input matInput type="password" formControlName="password">
+                    <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">
+                        {{'Password Error' | text}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="text-right loginfoot">
+                <a routerLink="../register" [queryParams]="route.snapshot.queryParams">{{'Register' |
+                    text}}</a>
+                <button color="primary" type="submit" [disabled]="loginForm.invalid || logingin"
+                    mat-raised-button>{{'Log in' | text}}</button>
+            </div>
+        </form>
+    </div>
+
+</div>

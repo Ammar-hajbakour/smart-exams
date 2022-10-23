@@ -1,0 +1,26 @@
+:host {
+
+    form {
+        padding: .5rem;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: baseline;
+
+        mat-form-field {
+            margin-inline-end: 1rem;
+        }
+
+        .exam-status {
+
+            mat-checkbox {
+                margin-inline-end: 1rem;
+            }
+        }
+
+        .mat-raised-button {
+            border-radius: 20px;
+        }
+
+
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "Email Error": "*Required, for examble: username@example.com",
+    "Password Error": "Password is required and must be 6 characters at least",
+    "Name Error": "*Required, must be 3 characters at least",
+    "Confirm Password Error": "*Required, This field should be same password field",
+    "Name": "Name",
+    "Log in": "Log in",
+    "Email": "Email",
+    "Password": "Password",
+    "Register": "Register",
+    "Confirm Password": "Confirm Password",
+    "Create": "Create"
+}

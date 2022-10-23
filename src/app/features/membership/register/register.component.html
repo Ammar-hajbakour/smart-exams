@@ -1,0 +1,53 @@
+<div class="register">
+    <div class="register-form">
+        <form [formGroup]="userForm" (ngSubmit)="submit()">
+            <h2>{{'Register' | text}}</h2>
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>{{'Name' | text}}</mat-label>
+                    <input matInput type="text" formControlName="name">
+                    <mat-error *ngIf="userForm.controls.name.invalid && userForm.controls.name.touched">
+                        {{'Name Error' | text}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>{{'Email' | text}}</mat-label>
+                    <input matInput type="email" formControlName="email">
+                    <mat-error *ngIf="userForm.controls['email'].invalid && userForm.controls.email.touched">
+                        {{'Email Error' | text}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>{{'Password' | text}}</mat-label>
+                    <input matInput type="password" formControlName="password">
+                    <mat-error *ngIf="userForm.controls.password.invalid && userForm.controls.password.touched">
+                        {{'Password Error' | text}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>{{'Confirm Password' | text}}</mat-label>
+                    <input matInput type="password" formControlName="confirmPassword">
+                    <mat-error
+                        *ngIf="(userForm.controls.confirmPassword.touched && userForm.controls.confirmPassword.invalid) || userForm.value.password !== userForm.value.confirmPassword">
+                        {{'Confirm Password Error' | text}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="text-right registfoot">
+                <a routerLink="../login" [queryParams]="route.snapshot.queryParams">{{'Log in' | text}}</a>
+                <button type="submit" mat-raised-button color="primary"
+                    [disabled]="userForm.invalid || registering">{{'Create' |
+                    text}}</button>
+
+            </div>
+        </form>
+    </div>
+
+</div>

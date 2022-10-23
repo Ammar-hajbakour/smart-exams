@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Exam</h2>
+<ng-container *ngIf="model">
+    <mat-dialog-content class="mat-typography">
+        <form #examForm="ngForm">
+            <input type="hidden" name="id" [value]="model.id">
+            <input type="hidden" name="instructorId" [value]="model.instructorId">
+            <mat-form-field appearance="legacy">
+                <mat-label>Exam Name</mat-label>
+                <input name="name" [(ngModel)]="model.name" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+                <mat-label>Category</mat-label>
+                <input name="category" [(ngModel)]="model.category" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+                <mat-label>Exam Duration</mat-label>
+                <input name="duration" [(ngModel)]="model.duration" matInput type="number">
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+                <mat-label>Pass Degree</mat-label>
+                <input name="passDegreePercentage" [(ngModel)]="model.passDegreePercentage" matInput type="number"
+                    min="0" max="100">
+            </mat-form-field>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Discard</button>
+        <button mat-button (click)="submit(examForm)" cdkFocusInitial>Save</button>
+    </mat-dialog-actions>
+</ng-container>

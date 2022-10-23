@@ -1,0 +1,85 @@
+<form>
+    <div class="details">
+        <mat-form-field class="category" appearance="legacy">
+            <mat-label>Category</mat-label>
+            <input matInput>
+        </mat-form-field>
+
+        <mat-form-field class="name" appearance="legacy">
+            <mat-label>Exam Name</mat-label>
+            <input matInput>
+        </mat-form-field>
+
+        <mat-form-field class="time" appearance="legacy">
+            <mat-label>Exam Duration</mat-label>
+            <input matInput type="number">
+        </mat-form-field>
+        <button (click)="addItemTo(questions)" mat-raised-button color="primary" *ngIf="!questions.length">Add
+            question</button>
+    </div>
+    <ng-container *ngIf="questions.length">
+        <mat-accordion class="example-headers-align">
+            <ng-container *ngFor="let q of questions;let last;let index=index">
+                <mat-expansion-panel [expanded]="step === last" (opened)="setStep(last)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Question {{last}}
+                        </mat-panel-title>
+
+                        <button (click)="deleteItemFrom(questions,index)" color="warn" mat-button>
+                            Delete question
+                        </button>
+
+                    </mat-expansion-panel-header>
+                    <div class="row question">
+                        <mat-form-field>
+                            <mat-label>Question Text</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="row answer" *ngFor="let answer of answers;let index = index">
+                        <mat-checkbox></mat-checkbox>
+                        <mat-form-field>
+                            <mat-label>Type answer here</mat-label>
+                            <textarea matInput></textarea>
+                        </mat-form-field>
+                        <button (click)="deleteItemFrom(answers,index)" mat-button color="warn">Delete
+                            answer</button>
+                    </div>
+                    <div class="flex-start">
+                        <button *ngIf="last === questions.length" mat-button color="primary"
+                            (click)="addItemTo(answers)">
+                            <mat-icon>add</mat-icon>Add answer
+                        </button>
+                    </div>
+                    <mat-action-row class="flex-start">
+                        <button *ngIf="last === questions.length" mat-button color="primary"
+                            (click)="nextStep(); addItemTo(questions)">
+                            <mat-icon>add</mat-icon>Add question
+                        </button>
+                        <button mat-button color="primary">
+                            <mat-icon>clear</mat-icon>Clear
+                        </button>
+                        <button *ngIf="step > 1" mat-button color="warn" (click)="prevStep()">Previous</button>
+                        <button *ngIf="step > last -1" mat-button color="primary" (click)="nextStep()">
+                            {{step < questions.length ? 'Next' : 'End' }} </button>
+
+                    </mat-action-row>
+                </mat-expansion-panel>
+            </ng-container>
+
+        </mat-accordion>
+
+        <mat-action-row class="flex-start">
+            <button color="primary" mat-raised-button>
+                <mat-icon>save</mat-icon>
+                Save
+            </button>
+            <button color="warn" mat-raised-button>
+                <mat-icon>cancel</mat-icon>
+                Cancel
+            </button>
+        </mat-action-row>
+    </ng-container>
+</form>
