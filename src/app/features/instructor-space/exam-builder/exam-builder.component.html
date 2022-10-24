@@ -4,7 +4,7 @@
         <div class="flex-start" style="display: flex; flex-flow: row;">
             <h2>{{_exam.name}}</h2>
             <span class="spacer"></span>
-            <button (click)="save(qForm)" color="primary" mat-stroked-button>
+            <button (click)="save()" color="primary" mat-stroked-button>
                 <mat-icon>save</mat-icon>
                 Save
             </button>
@@ -18,27 +18,26 @@
                     <div style="display: flex;">
                         <mat-form-field style="width: 110px">
                             <mat-label>Point of question</mat-label>
-                            <input type="number" matInput [(ngModel)]="q['points']" name="points">
+                            <input type="number" matInput [(ngModel)]="q.points" name="points">
                         </mat-form-field>
                         <span class="spacer"></span>
                         <button *ngIf="active === q" (click)="deleteItemFrom(questions,index)" color="warn"
                             mat-icon-button>
                             <mat-icon>delete</mat-icon>
                         </button>
-
                     </div>
                     <div class="row question">
                         <mat-form-field>
                             <mat-label>Question Text</mat-label>
-                            <textarea matInput [(ngModel)]="q['text']" name="text">{{q.text}}</textarea>
+                            <textarea matInput [(ngModel)]="q.text" name="text">{{q.text}}</textarea>
                         </mat-form-field>
 
                     </div>
-                    <div class="row answer" *ngFor="let choice of q['choices'];let i = index">
+                    <div class="row answer" *ngFor="let choice of q.choices; let i = index">
                         <mat-checkbox [value]="correctAnswers[index]"></mat-checkbox>
                         <mat-form-field>
                             <mat-label>Type answer here</mat-label>
-                            <input matInput [(ngModel)]="choice['value']" name="choice">
+                            <input matInput [value]="choice.display" (input)="changeChoiceValue(choice, $event)" name="choice">
                         </mat-form-field>
                         <button (click)="deleteItemFrom(q.choices,index)" mat-icon-button color="warn">
                             <mat-icon>do_not_disturb_on</mat-icon>

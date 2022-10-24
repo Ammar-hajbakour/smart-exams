@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: ':lang/instructor', canActivateChild: [InstructorGuard], loadChildren: () => import('./features/instructor-space/instructor-space.module').then(m => m.InstructorSpaceModule) },
   { path: ':lang/admin', canActivateChild: [AdminGuard], loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule) },
   { path: ':lang/student', canActivateChild: [StudentGuard], loadChildren: () => import('./features/student/student.module').then(m => m.StudentModule) },
+  { path: ':lang/response', loadChildren: () => import('./features/response/response.module').then(m => m.ResponsesModule) },
   {
     path: ':lang', component: SimpleLayoutComponent, children: [
       { path: 'home', component: HomePageComponent },

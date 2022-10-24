@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, doc, setDoc, collectionData, deleteDoc, docData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, doc, setDoc, collectionData, deleteDoc, docData, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
-import { Exam } from '../models/exam.model';
+import { Exam, Question } from '../models/exam.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,9 @@ export class ExamsService {
 
 
   save(exam: Partial<Exam>): Promise<Partial<Exam>> {
-    if(exam.id) return this.updateExam(exam)
+    if (exam.id) return this.updateExam(exam)
     else return this.createExam(exam)
-    
+
   }
 
   private createExam(exam: Partial<Exam>) {
@@ -23,15 +23,20 @@ export class ExamsService {
     return addDoc(subjectsRef, exam)
   }
   private async updateExam(exam: Partial<Exam>) {
-    const {id} = exam
-    const e = {...exam} as any
+    const { id } = exam
+    const e = { ...exam } as any
     delete e.id
     let examRef = doc(this.store, `${this.collectionName}/${id}`)
     await setDoc(examRef, e)
     return exam
   }
-
-  async getExams(filter?:any) {
+  async updateExamQuestions(id: string, questions: Question[]) {
+    let examRef = doc(this.store, `${this.collectionName}/${id}`)
+    return updateDoc(examRef, {
+      ['questions']: questions.map(q => Object.assign({}, q))
+    })
+  }
+  async getExams(filter?: any) {
     let subjectsRef = collection(this.store, this.collectionName)
     return await firstValueFrom(collectionData(subjectsRef, { idField: 'id' })) as Exam[]
   }
@@ -42,6 +47,11 @@ export class ExamsService {
   async getExamById(id: string) {
     let subjectRef = doc(this.store, `${this.collectionName}/${id}`)
     const exam = await firstValueFrom(docData(subjectRef)) as Exam
-    return exam
+    if (!exam) throw new Error("Exam not found");
+
+    return { ...exam, id }
   }
 }
+
+
+

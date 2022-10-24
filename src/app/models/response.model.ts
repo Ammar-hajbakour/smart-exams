@@ -1,12 +1,12 @@
-export class Response {
+export class ExamResponse {
     id!: string
 
-    constructor(public userId: string, public subjectId: string) { }
+    constructor(public userId: string, public examId: string) { }
 
-    answers!: { id: string, value: unknown }[]
+    answers: { [questionId: string]: (string | number)[] } = {}
 
-    result!: number
+    result: number = 0
     status: 'started' | 'finished' = 'started'
     startTime: number = Date.now()
-    endTime!: number
+    endTime: number | null = null
 }

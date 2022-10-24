@@ -7,12 +7,17 @@ export class Exam {
     passDegreePercentage: number = 60
     correctAnswers: string[] = []
     status: 'building' | 'review' | 'published' | 'archived' = 'building'
+
+
+    shuffle: boolean = false
+    show1by1: boolean = false
 }
 
 export class Question {
     id: number = Date.now()
     text: string = '';
     choices: { display: string, value: string | number }[] = []
+    shuffleChoices: boolean = false
     points = 1
     isSingleChoice?: boolean = true // do not implement this
 }
