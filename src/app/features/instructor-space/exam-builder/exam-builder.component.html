@@ -4,52 +4,59 @@
         <div class="flex-start" style="display: flex; flex-flow: row;">
             <h2>{{_exam.name}}</h2>
             <span class="spacer"></span>
-            <button color="primary" mat-stroked-button>
+            <button (click)="save(qForm)" color="primary" mat-stroked-button>
                 <mat-icon>save</mat-icon>
                 Save
             </button>
         </div>
         <br>
-        <form>
+        <form #qForm="ngForm">
             <ng-container *ngIf="questions.length">
                 <div class="question-wrapper" [class.active]="active === q" (click)="active = q"
-                    *ngFor="let q of questions;let last;let index=index">
-                    <div class="row question">
-                        <mat-form-field>
-                            <mat-label>Question Text</mat-label>
-                            <textarea matInput></textarea>
-                        </mat-form-field>
+                    *ngFor="let q of questions;let index=index">
 
-                    </div>
-                    <div class="row answer" *ngFor="let answer of answers;let index = index">
-                        <mat-checkbox></mat-checkbox>
-                        <mat-form-field>
-                            <mat-label>Type answer here</mat-label>
-                            <textarea matInput></textarea>
+                    <div style="display: flex;">
+                        <mat-form-field style="width: 110px">
+                            <mat-label>Point of question</mat-label>
+                            <input type="number" matInput [(ngModel)]="q['points']" name="points">
                         </mat-form-field>
-                        <button (click)="deleteItemFrom(answers,index)" mat-icon-button color="warn">
-                            <mat-icon>do_not_disturb_on</mat-icon>
-                        </button>
-                    </div>
-                    <div class="flex-start">
-                        <button *ngIf="active === q" mat-button color="primary" (click)="addItemTo(answers)">
-                            <mat-icon>add_circle</mat-icon> Add Option
-                        </button>
-                    </div>
-                    <mat-action-row class="flex-end">
+                        <span class="spacer"></span>
                         <button *ngIf="active === q" (click)="deleteItemFrom(questions,index)" color="warn"
                             mat-icon-button>
                             <mat-icon>delete</mat-icon>
                         </button>
 
-                    </mat-action-row>
+                    </div>
+                    <div class="row question">
+                        <mat-form-field>
+                            <mat-label>Question Text</mat-label>
+                            <textarea matInput [(ngModel)]="q['text']" name="text">{{q.text}}</textarea>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="row answer" *ngFor="let choice of q['choices'];let i = index">
+                        <mat-checkbox [value]="correctAnswers[index]"></mat-checkbox>
+                        <mat-form-field>
+                            <mat-label>Type answer here</mat-label>
+                            <input matInput [(ngModel)]="choice['value']" name="choice">
+                        </mat-form-field>
+                        <button (click)="deleteItemFrom(q.choices,index)" mat-icon-button color="warn">
+                            <mat-icon>do_not_disturb_on</mat-icon>
+                        </button>
+                    </div>
+                    <div class="flex-start">
+                        <button *ngIf="active === q" mat-button color="primary" (click)="addOption(q)">
+                            <mat-icon>add_circle</mat-icon> Add Option
+                        </button>
+                    </div>
+
                 </div>
 
 
             </ng-container>
         </form>
         <br>
-        <button mat-button color="primary" (click)="addItemTo(questions)">
+        <button mat-button color="primary" (click)="addQuestion(questions)">
             <mat-icon>add</mat-icon>Add question
         </button>
     </ng-container>

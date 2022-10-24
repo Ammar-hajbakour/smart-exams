@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { map, of, switchMap } from 'rxjs';
-import { Exam } from 'src/app/models/exam.model';
+import { Exam, Question } from 'src/app/models/exam.model';
 import { ExamsService } from 'src/app/shared/exams.service';
 
 @Component({
@@ -10,48 +11,58 @@ import { ExamsService } from 'src/app/shared/exams.service';
   styleUrls: ['./exam-builder.component.scss']
 })
 export class ExamBuilderComponent implements OnInit {
-  questions: any[] = new Array(1).fill(1).map(x => ({}))
-  answers: any[] = new Array(1).fill(1).map(x => ({}))
-  active = null
+
+  questions: Question[] = []
+  // exam: Exam = new Exam()
+  correctAnswers: string[] = []
+  active: any
 
   exam$ = this.route.params.pipe(
-    switchMap(ps => {
+    switchMap((ps) => {
       if (ps['id']) return this.examsService.getExamById(ps['id'])
-      else return of(null)
+      else return []
     }),
-    map(exam => {
+    map((exam: Exam) => {
       if (exam) {
         this.questions = exam.questions
+
         this.active = this.questions[0]
       }
 
       return exam
     }))
   constructor(private route: ActivatedRoute, private examsService: ExamsService) {
-    this.setStep(1)
+
   }
-  step = 0;
-  addItemTo(array: Array<any>) {
-    array.push(array.length + 1)
+
+  addQuestion(array: Array<Question>) {
+    array.push(new Question())
     this.active = array[array.length - 1]
+
+  }
+  addOption(q: Question) {
+
+    q.choices.push({ display: '', value: '' })
+  }
+  setOption(e: any, choice: { display: string, value: string | number }) {
+    choice.value = e.data
+    console.log(e.data);
+
   }
   deleteItemFrom(array: Array<any>, index: number) {
     array.splice(index, 1)
   }
-  setStep(index: number) {
-    this.step = index;
-  }
+  save(form: NgForm) {
+    if (form.valid) {
+      // this.questions = form.value
+      // this.examsService.save(form.value)
+      console.log(this.questions);
 
-  nextStep() {
-    this.step++;
-
-  }
-
-  prevStep() {
-    this.step--;
+    }
   }
   ngOnInit(): void {
-
+    this.exam$.subscribe(res => console.log(res)
+    )
   }
 
 }

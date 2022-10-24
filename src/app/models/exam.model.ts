@@ -5,16 +5,16 @@ export class Exam {
     category: string = ''
     duration: number = 120
     passDegreePercentage: number = 60
-
+    correctAnswers: string[] = []
     status: 'building' | 'review' | 'published' | 'archived' = 'building'
 }
 
 export class Question {
     id: number = Date.now()
-    text!: string;
+    text: string = '';
     choices: { display: string, value: string | number }[] = []
     points = 1
-    isSingleChoice: boolean = true // do not implement this
+    isSingleChoice?: boolean = true // do not implement this
 }
 
 
