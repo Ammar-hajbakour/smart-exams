@@ -9,6 +9,7 @@ import { InstructorGuard } from './instructor.guard';
 import { SimpleLayoutComponent } from './simple-layout/simple-layout.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/en', pathMatch: 'full' },
   { path: ':lang/account', loadChildren: () => import('./features/membership/membership.module').then(m => m.MembershipModule) },
   { path: ':lang/instructor', canActivateChild: [InstructorGuard], loadChildren: () => import('./features/instructor-space/instructor-space.module').then(m => m.InstructorSpaceModule) },
   { path: ':lang/admin', canActivateChild: [AdminGuard], loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule) },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: ':lang/response', loadChildren: () => import('./features/response/response.module').then(m => m.ResponsesModule) },
   {
     path: ':lang', component: SimpleLayoutComponent, children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
       { path: 'exams', component: ExamsListPageComponent },
       { path: 'exam/:id', component: ExamDetailsPageComponent }

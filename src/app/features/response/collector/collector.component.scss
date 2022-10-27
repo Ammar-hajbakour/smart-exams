@@ -1,4 +1,19 @@
 :host {
+    max-width: 800px;
+    margin-inline: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+    justify-content: center;
+
+    .timer{
+        position: fixed;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2.5rem;
+        color: #ff00aa;
+    }
 
     .question-wrapper {
         background-color: #fff;
@@ -6,6 +21,7 @@
         border-radius: 5px;
         padding: 1rem;
         transition: all ease-in 250ms;
+        width: 100%;
 
         &.active {
             box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;

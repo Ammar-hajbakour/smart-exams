@@ -2,7 +2,9 @@
     <ng-container *ngIf="_exam !== null">
 
         <!-- <code>{{("0"+tHour).slice(-2)}}:{{("0"+tMinute).slice(-2)}}:{{("0"+tSecond).slice(-2)}}</code> -->
-        <code>{{remain | date:'HH:mm:ss'}}:</code>
+        <span class="timer" *ngIf="remainTime$ | async as remain">
+            {{remain | date:'H:mm:ss'}}
+        </span>
         <ng-container *ngIf="_exam.questions.length">
             <div class="question-wrapper" [class.active]="active === q" (click)="active = q"
                 *ngFor="let q of _exam.questions;let index=index">
