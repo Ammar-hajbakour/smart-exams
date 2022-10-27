@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, doc, setDoc, collectionData, deleteDoc, docData, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, doc, setDoc, collectionData, deleteDoc, docData, updateDoc, query, where } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 import { Exam, Question } from '../models/exam.model';
+import { Filter } from '../models/filter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +37,12 @@ export class ExamsService {
       ['questions']: questions.map(q => Object.assign({}, q))
     })
   }
-  async getExams(filter?: any) {
-    let subjectsRef = collection(this.store, this.collectionName)
-    return await firstValueFrom(collectionData(subjectsRef, { idField: 'id' })) as Exam[]
+  async getExams(filter?: Filter) {
+    let ref = collection(this.store, this.collectionName)
+
+    return await firstValueFrom(collectionData(ref, { idField: 'id' })) as Exam[]
+
+
   }
   async deleteExam(id: string) {
     let subjectRef = doc(this.store, `${this.collectionName}/${id}`)

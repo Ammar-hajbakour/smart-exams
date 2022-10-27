@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 export const MatrialCommon = [
     MatButtonModule,
     MatButtonToggleModule,
@@ -40,5 +41,6 @@ export const MatrialCommon = [
     MatSelectModule,
     MatCheckboxModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCardModule
 ]

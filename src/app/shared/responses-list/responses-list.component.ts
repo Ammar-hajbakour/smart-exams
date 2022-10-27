@@ -15,6 +15,7 @@ export class ResponsesListComponent implements OnInit {
     { display: 'Exam', prop: 'examName' },
     { display: 'Date', prop: 'date' },
     { display: 'Status', prop: 'status' },
+
   ]
   get displayedColumns() { return this.actions.length ? [...this.columns.map(c => c.display), 'Actions'] : this.columns.map(c => c.display) }
   data$ = new ReplaySubject<any[]>(1)

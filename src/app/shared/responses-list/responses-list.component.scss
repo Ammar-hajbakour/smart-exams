@@ -1,11 +1,9 @@
-:host {
-    table {
+:host {}
 
-        width: 100%;
+table {
+    width: 100%;
+}
 
-        td,
-        th {
-            width: 25%;
-        }
-    }
+.mat-stroked-button:not(:last-of-type) {
+    margin-inline-end: .5rem;
 }

@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./responses-page.component.scss']
 })
 export class ResponsesPageComponent implements OnInit {
-  actions = ['view', 'result', 'continue']
+  actions = ['start', 'result', 'continue']
 
   constructor() { }
 

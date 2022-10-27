@@ -40,10 +40,10 @@ export class ExamResponsesService {
   }
 
   async updateResponse(id: string, response: Partial<ExamResponse>) {
-    let examRef = doc(this.store, `${this.collectionName}/${id}`);
+    let ref = doc(this.store, `${this.collectionName}/${id}`);
     const res = { ...response }
     if (res.id) delete res.id
-    await updateDoc(examRef, res);
+    await updateDoc(ref, res);
     return response
   }
 
