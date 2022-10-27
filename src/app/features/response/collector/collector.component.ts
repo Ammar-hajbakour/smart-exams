@@ -86,9 +86,7 @@ export class CollectorComponent implements OnInit {
     })
 
   }
-  tSecond: number = 0
-  tMinute: number = 0
-  tHour: number = 0
+  remain: Date
 
   setTimer(timeByMinutes: number) {
     this.tHour = Math.floor(timeByMinutes / 60)
