@@ -1,7 +1,7 @@
 <ng-container *ngIf="exam$|async as _exam">
     <ng-container *ngIf="_exam !== null">
 
-
+        <code>{{("0"+tHour).slice(-2)}}:{{("0"+tMinute).slice(-2)}}:{{("0"+tSecond).slice(-2)}}</code>
         <ng-container *ngIf="_exam.questions.length">
             <div class="question-wrapper" [class.active]="active === q" (click)="active = q"
                 *ngFor="let q of _exam.questions;let index=index">

@@ -18,6 +18,10 @@ export class CollectorComponent implements OnInit {
 
   active: Question | null = null
   exam!: Exam
+  response!: ExamResponse
+  remainingTime!: number
+  currentTimer!: number
+  timeInt: any
   exam$: Observable<Exam> = combineLatest([this.route.params, this.auth.user$]).pipe(
     filter(([ps, user]) => ps['exam'] != this.exam?.id),
     switchMap(([ps, user]) => this.examsService.getExamById(ps['exam'])),
@@ -28,6 +32,11 @@ export class CollectorComponent implements OnInit {
         const left = 0.001 * ((response.endTime ?? Date.now()) - response.startTime)
         if (response.status !== 'finished' && this.exam.duration > left) {
           this.response = response
+          this.remainingTime = (Date.now() / 1000 / 60) - this.response.startTime
+          this.currentTimer = this.remainingTime > 0 ? this.remainingTime : 0
+          this.playTimer(this.currentTimer)
+          console.log(this.remainingTime, this.currentTimer);
+
         }
         else throwError(() => new Error('Can not retake this exam!'))
       }
@@ -40,16 +49,16 @@ export class CollectorComponent implements OnInit {
     })
   )
 
-
   constructor(
     private responsesService: ExamResponsesService,
     private auth: AuthService,
     private route: ActivatedRoute,
     private examsService: ExamsService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
 
-  response!: ExamResponse
+  }
+
 
   async answerChange(q: Question, choice: { value: string | number, display: string }, event: any) {
     let value = (this.response.answers[q.id] ?? [])
@@ -76,6 +85,40 @@ export class CollectorComponent implements OnInit {
       answers: this.response.answers
     })
 
+  }
+  tSecond: number = 0
+  tMinute: number = 0
+  tHour: number = 0
+
+  setTimer(timeByMinutes: number) {
+    this.tHour = Math.floor(timeByMinutes / 60)
+    this.tMinute = timeByMinutes % 60
+  }
+  playTimer(timeByMinutes: number) {
+    if (timeByMinutes <= 0) {
+      clearInterval(this.timeInt)
+      return
+    }
+    this.setTimer(timeByMinutes)
+    this.tSecond = 59
+    this.tMinute--
+    this.timeInt = setInterval(() => {
+      this.tSecond--
+
+      if (this.tMinute === -1) {
+        this.tMinute = 59
+        this.tHour--
+      }
+      if (this.tSecond === -1) {
+        this.tSecond = 59
+        this.tMinute--
+      }
+
+      if (this.tHour === 0 && this.tMinute === 0 && this.tSecond === 0) {
+
+        clearInterval(this.timeInt)
+      }
+    }, 1000)
   }
 
 }
