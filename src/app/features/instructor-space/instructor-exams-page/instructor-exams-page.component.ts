@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LanguageService } from '@upupa/language';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { Exam } from 'src/app/models/exam.model';
+import { ActionDescriptor } from 'src/app/shared/exams-list/exams-list.component';
 import { ExamsService } from 'src/app/shared/exams.service';
 import { AuthService } from '../../membership/services/auth.service';
 import { ExamFormComponent } from '../exam-form/exam-form.component';
@@ -15,7 +16,12 @@ import { ExamFormComponent } from '../exam-form/exam-form.component';
 })
 export class InstructorExamsPageComponent implements OnInit {
 
-  actions = ['view', 'edit', 'build', 'changeStatus', 'delete']
+  actions = [
+    { name: 'edit', text: 'Edit Exam info', icon: 'edit', variant: 'icon' } as ActionDescriptor,
+    { name: 'build', text: 'Edit Exam questions', icon: 'build', variant: 'icon' } as ActionDescriptor,
+    { name: 'changeStatus', text: 'Publish or unpublish', icon: 'published_with_changes', variant: 'icon' } as ActionDescriptor,
+    { name: 'delete', text: 'Delete', icon: 'delete', variant: 'icon' } as ActionDescriptor
+  ]
 
   exams = new BehaviorSubject<Partial<Exam>[]>([])
 
@@ -32,24 +38,33 @@ export class InstructorExamsPageComponent implements OnInit {
   }
 
 
-  async addExam() {
+
+
+  async addOrEditExam(examId?: string) {
     const result = await firstValueFrom(this.dialog.open(ExamFormComponent, {
-      data: { instructorId: this.auth.user.id }
+      disableClose: true,
+      data: { instructorId: this.auth.user.id, examId }
     }).afterClosed());
 
     if (result) {
       //after close dialog refresh list
+      const v = this.exams.value
+      if (examId) {
+        const idx = v.findIndex(i => i.id === result.id)
+        if (idx > -1) v.splice(idx, 1, result)
+      }
+      else v.push(result)
 
-      this.exams.next([...this.exams.value, result])
+      this.exams.next([...v])
     }
   }
 
-  onAction(e: { action: string, element: Partial<Exam> }) {
+  async onAction(e: { action: string, element: Partial<Exam> }) {
     console.log(e);
 
     switch (e.action) {
-      case 'build': this.router.navigate(['/', this.ls.language, 'instructor', 'build', e.element.id]);
-        break;
+      case 'build': return this.router.navigate(['/', this.ls.language, 'instructor', 'build', e.element.id]);
+      case 'edit': return await this.addOrEditExam(e.element.id)
     }
   }
 }

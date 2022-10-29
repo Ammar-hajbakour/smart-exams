@@ -8,6 +8,7 @@ export class Exam {
     correctAnswers: string[] = []
     status: 'building' | 'review' | 'published' | 'archived' = 'building'
 
+    answerInstructions!:string
 
     shuffle: boolean = false
     show1by1: boolean = false

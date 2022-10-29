@@ -1,6 +1,3 @@
-<ng-container *ngIf="remainTime$ | async as remain; else rTime">
+<ng-container *ngIf="remainTime$ | async as remain">
     <span>{{remain | date:'H:mm:ss'}}</span>
 </ng-container>
-<ng-template #rTime>
-    <span class='stoped'>{{remainTime | date:'H:mm:ss'}}</span>
-</ng-template>

@@ -1,21 +1,19 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, tap, Observable, throwError, filter, combineLatest, of, map, interval, takeUntil, Subject, takeWhile, BehaviorSubject, firstValueFrom, distinctUntilChanged, take } from 'rxjs';
+import { switchMap, tap, Observable, throwError, filter, combineLatest, map } from 'rxjs';
 import { Exam, Question } from 'src/app/models/exam.model';
 import { ExamResponse } from 'src/app/models/response.model';
 import { ExamResponsesService } from 'src/app/shared/exam-responses.service';
 
 import { ExamsService } from 'src/app/shared/exams.service';
 import { AuthService } from '../../membership/services/auth.service';
-import { diffTime } from './diff-time';
 
 @Component({
   selector: 'app-collector',
   templateUrl: './collector.component.html',
   styleUrls: ['./collector.component.scss']
 })
-export class CollectorComponent implements OnInit {
+export class CollectorComponent {
 
   active: Question | null = null
   exam!: Exam
@@ -38,6 +36,7 @@ export class CollectorComponent implements OnInit {
         this.response = new ExamResponse(this.auth.user.id, this.exam.id)
         this.exam.questions.forEach(q => this.response.answers[q.id] = [])
       }
+
     }),
     map(() => {
       const exam = { ...this.exam }
@@ -46,17 +45,19 @@ export class CollectorComponent implements OnInit {
       return exam
     })
   )
+  stopTime: number | null = null;
   constructor(
     private responsesService: ExamResponsesService,
     private auth: AuthService,
     private route: ActivatedRoute,
     private examsService: ExamsService) { }
 
-  ngOnInit() { }
-  timeOut() {
-    console.log('Time out');
 
+  async timeOut() {
+    //alert time out
+    await this.submit()
   }
+
   async answerChange(q: Question, choice: { value: string | number, display: string }, event: any) {
     let value = (this.response.answers[q.id] ?? [])
     if (event.checked) value.push(choice.value)
@@ -72,8 +73,10 @@ export class CollectorComponent implements OnInit {
     }
   }
 
-
-  // When time is up -> submit automatically
+  startAnswer() {
+    this.response.startTime = Date.now()
+    this.stopTime = this.response.startTime + (this.exam.duration * 60000)
+  }
 
   async submit() {
     // disable collector form and submit directly and show submitting indicator

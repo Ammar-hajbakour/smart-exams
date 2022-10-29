@@ -1,5 +1,5 @@
 <app-exams-list [data]="exams | async" [actions]="actions" (elementAction)="onAction($event)"></app-exams-list>
 
-<button mat-fab (click)="addExam()">
+<button mat-fab (click)="addOrEditExam()">
     <mat-icon>add</mat-icon>
 </button>

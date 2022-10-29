@@ -1,29 +1,35 @@
 <ng-container *ngIf="exam$|async as _exam">
     <ng-container *ngIf="_exam !== null">
 
-        <app-timer class="timer" (timeOut)="timeOut()" [startTime]="response.startTime" [duration]="exam.duration"
-            [endTime]="response.endTime">
+        <div *ngIf="stopTime === null; else answesTemplate"
+            style="display: flex; height: 100%; justify-content: center; flex-flow: column nowrap;">
+            <p>{{_exam.answerInstructions}}</p>
+            <button (click)="startAnswer()">Start</button>
+        </div>
+        <app-timer *ngIf="stopTime" [start]="stopTime !== null" class="timer" (timeOut)="timeOut()"
+            [startTime]="response.startTime" [endTime]="stopTime">
         </app-timer>
+        <ng-template #answesTemplate>
 
-        <ng-container *ngIf="_exam.questions.length">
-            <div class="question-wrapper" [class.active]="active === q" (click)="active = q"
-                *ngFor="let q of _exam.questions;let index=index">
+            <ng-container *ngIf="_exam.questions.length">
+                <div class="question-wrapper" [class.active]="active === q" (click)="active = q"
+                    *ngFor="let q of _exam.questions;let index=index">
 
-                <div class="row question">
-                    <h2>{{q.text}}</h2>
+                    <div class="row question">
+                        <h2>{{q.text}}</h2>
+                    </div>
+                    <div class="row answer" *ngFor="let choice of q.choices; let i = index">
+                        <mat-checkbox [checked]="response.answers[q.id].indexOf(choice.value) > -1"
+                            (change)="answerChange(q,choice, $event)">{{choice.display}}</mat-checkbox>
+                    </div>
                 </div>
-                <div class="row answer" *ngFor="let choice of q.choices; let i = index">
-                    <mat-checkbox [checked]="response.answers[q.id].indexOf(choice.value) > -1"
-                        (change)="answerChange(q,choice, $event)">{{choice.display}}</mat-checkbox>
-                </div>
-            </div>
-        </ng-container>
+            </ng-container>
 
 
-        <br>
-        <button mat-button color="primary" (click)="submit()">
-            <mat-icon>done</mat-icon>Submit
-        </button>
-
+            <br>
+            <button mat-button color="primary" (click)="submit()">
+                <mat-icon>done</mat-icon>Submit
+            </button>
+        </ng-template>
     </ng-container>
 </ng-container>

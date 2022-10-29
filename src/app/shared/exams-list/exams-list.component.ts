@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { Exam } from 'src/app/models/exam.model';
 
+export type ActionDescriptor = { name: string, text?: string, icon?: string, variant: 'icon' | 'button' }
 @Component({
   selector: 'app-exams-list',
   templateUrl: './exams-list.component.html',
@@ -10,7 +11,7 @@ import { Exam } from 'src/app/models/exam.model';
 export class ExamsListComponent implements OnInit {
 
   @Output() elementAction = new EventEmitter<{ element: any, action: string }>()
-  @Input() actions: string[] = []
+  @Input() actions: ActionDescriptor[] = []
 
   @Input() columns: { prop: string, display: string }[] = [
     { display: 'Exam Name', prop: 'name' },

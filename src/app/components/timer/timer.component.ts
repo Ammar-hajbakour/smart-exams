@@ -1,46 +1,42 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { BehaviorSubject, finalize, interval, map, switchMap, takeWhile, tap } from 'rxjs';
+import { BehaviorSubject, filter, finalize, interval, map, of, startWith, switchMap, takeWhile, tap } from 'rxjs';
 
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss']
 })
-export class TimerComponent implements OnInit, OnChanges {
+export class TimerComponent {
   @Input() startTime!: number;
-  @Input() duration!: number
-  @Input() endTime!: number | null
-  @Output() timeOut = new EventEmitter(false)
-  stopTime!: number;
+  @Input() endTime!: number
+
+  @Output() timeOut = new EventEmitter()
+
+
+  private _start!: boolean;
+  @Input()
+  public get start(): boolean {
+    return this._start;
+  }
+
+  public set start(v: boolean) {
+    this._start = v;
+    this.started$.next(v)
+  }
+
 
   started$ = new BehaviorSubject<boolean>(false)
 
-  remainTime$ = interval(1000).pipe(
-    takeWhile(() => this.started$.value === true && Math.max(0, this.stopTime - Date.now()) > 0),
-    map(() => diffTime(Date.now(), this.stopTime)), finalize(() => this.timeOut.emit(true)))
-  remainTime!: Date
-  constructor() { }
-
-  ngOnInit(): void {
-    this.startTimer()
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['endTime']) this.stopTimer()
-  }
-  startTimer() {
-    // this.response.startTime = Date.now()
-    // this.startTime = Date.now()
-    this.stopTime = this.startTime + (this.duration * 60000)
-    const left = ((this.endTime ?? Date.now()) - this.startTime) / 60000
-    if (this.endTime || this.duration <= left) {
-      this.remainTime = this.endTime ? diffTime(this.startTime, this.endTime) : new Date(0)
-      return
-    }
-    this.started$.next(true)
-  }
-  stopTimer() {
-    this.started$.next(false)
-  }
+  remainTime$ = this.started$.pipe(
+    switchMap(status => {
+      if (!status) return of(0)
+      else return interval(1000).pipe(
+        startWith(diffTime(Date.now(), this.endTime)),
+        takeWhile(() => Math.max(0, this.endTime - Date.now()) > 0),
+        map(() => diffTime(Date.now(), this.endTime)),
+        finalize(() => this.timeOut.emit(true)))
+    })
+  )
 }
 export function diffTime(d1: number, d2: number): Date {
   let delta = (d2 - d1) / 1000
@@ -50,6 +46,5 @@ export function diffTime(d1: number, d2: number): Date {
   var minutes = Math.floor(delta / 60) % 60
   delta -= minutes * 60
   var seconds = delta % 60
-  const _ = new Date()
-  return new Date(_.getFullYear(), _.getMonth(), _.getDate(), hours, minutes, seconds)
+  return new Date(0, 0, 0, hours, minutes, seconds)
 }
