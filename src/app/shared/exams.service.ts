@@ -49,9 +49,9 @@ export class ExamsService {
     return await deleteDoc(subjectRef)
   }
   async getExamById(id: string) {
-    let subjectRef = doc(this.store, `${this.collectionName}/${id}`)
-    const exam = await firstValueFrom(docData(subjectRef)) as Exam
-    if (!exam) throw new Error("Exam not found");
+    let ref = doc(this.store, `${this.collectionName}/${id}`)
+    const exam = await firstValueFrom(docData(ref)) as Exam
+    if (!exam) throw new Error("Exam not found")
 
     return { ...exam, id }
   }

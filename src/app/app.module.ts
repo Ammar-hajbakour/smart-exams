@@ -14,6 +14,7 @@ import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore'
 import { HttpClientModule } from '@angular/common/http';
 import { SimpleLayoutComponent } from './simple-layout/simple-layout.component';
+// import { TimerComponent } from './components/timer/timer.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SimpleLayoutComponent } from './simple-layout/simple-layout.component';
     HomePageComponent,
     ExamsListPageComponent,
     ExamDetailsPageComponent,
-    SimpleLayoutComponent
+    SimpleLayoutComponent,
+    // TimerComponent
   ],
   imports: [
     BrowserModule,

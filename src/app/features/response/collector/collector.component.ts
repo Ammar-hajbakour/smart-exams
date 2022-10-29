@@ -17,20 +17,9 @@ import { diffTime } from './diff-time';
 })
 export class CollectorComponent implements OnInit {
 
-  startTime!: number;
-  stopTime!: number;
   active: Question | null = null
   exam!: Exam
   response!: ExamResponse
-
-
-  started$ = new BehaviorSubject<boolean>(false)
-
-
-  remainTime$ = interval(1000).pipe(
-    takeWhile(() => this.started$.value === true && Math.max(0, this.stopTime - Date.now()) > 0),
-    map(() => diffTime(Date.now(), this.stopTime)))
-
 
   exam$: Observable<Exam> = combineLatest([this.route.params, this.auth.user$]).pipe(
     filter(([ps, user]) => ps['exam'] != this.exam?.id),
@@ -53,34 +42,21 @@ export class CollectorComponent implements OnInit {
     map(() => {
       const exam = { ...this.exam }
       if (exam.shuffle === true) exam.questions = this.exam.questions.sort((q1, q2) => Math.random() - Math.random())
-      
+
       return exam
     })
   )
-
-
   constructor(
     private responsesService: ExamResponsesService,
     private auth: AuthService,
     private route: ActivatedRoute,
     private examsService: ExamsService) { }
 
-  async ngOnInit(): Promise<void> {
-    //move to start btn click event
-    await firstValueFrom(this.exam$)
-    setTimeout(() => {
-      this.startExam()
-    }, 1000);
+  ngOnInit() { }
+  timeOut() {
+    console.log('Time out');
+
   }
-
-  startExam() {
-    this.response.startTime = Date.now()
-    this.startTime = this.response.startTime
-    this.stopTime = this.response.startTime + (this.exam.duration * 60000)
-    this.started$.next(true)
-  }
-
-
   async answerChange(q: Question, choice: { value: string | number, display: string }, event: any) {
     let value = (this.response.answers[q.id] ?? [])
     if (event.checked) value.push(choice.value)
@@ -102,11 +78,9 @@ export class CollectorComponent implements OnInit {
   async submit() {
     // disable collector form and submit directly and show submitting indicator
     // when submittion is don show any message to tell user.
-  
+
     this.response.endTime = Date.now()
     this.response.status = 'finished'
-
-    this.started$.next(false)
 
     await this.responsesService.updateResponse(this.response.id, {
       endTime: this.response.endTime,
