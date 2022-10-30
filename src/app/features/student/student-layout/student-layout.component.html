@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button (click)="drawer.toggle()" class="example-icon"
+        aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>My App</span>
+    <span class="spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+        <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+        <mat-icon>share</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-drawer-container class="example-container">
+    <mat-drawer #drawer [mode]="'side'" [opened]="true">
+        <div class="cp-links">
+            <a class="cp-link" routerLink="/{{ls.language}}/exams" [routerLinkActive]="'active'">Exams</a>
+            <a class="cp-link" routerLink="./my-responses" [routerLinkActive]="'active'">My Responses</a>
+        </div>
+    </mat-drawer>
+    <mat-drawer-content>
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

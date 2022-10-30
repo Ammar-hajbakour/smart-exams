@@ -8,9 +8,18 @@
         <ng-container matColumnDef="Actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let element">
-                <button mat-stroked-button (click)="emitAction(element, action)" *ngFor="let action of actions">
-                    {{action}}
-                </button>
+                <ng-container *ngFor="let action of actions">
+                    <button *ngIf="action.variant === 'button'" mat-stroked-button
+                        (click)="emitAction(element, action)">
+                        <mat-icon *ngIf="action.icon">{{action.icon}}</mat-icon>
+                        <span *ngIf="action.text">{{action.text}}</span>
+
+                    </button>
+                    <button matTooltip="{{action.text || action.name}}" matTooltipClass="tooltip-action"
+                        *ngIf="action.variant === 'icon'" mat-icon-button (click)="emitAction(element, action)">
+                        <mat-icon *ngIf="action.icon">{{action.icon}}</mat-icon>
+                    </button>
+                </ng-container>
             </td>
         </ng-container>
     </ng-container>
