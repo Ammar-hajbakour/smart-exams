@@ -30,9 +30,14 @@ export class ExamFormComponent implements OnInit {
   async submit(form: NgForm) {
     if (form.invalid) return
     const v = { ...this.model }
+<<<<<<< Updated upstream
+    const id = await this.examsService.save(v).then(x=>x.id)
+    this.dialogRef.close({...v, id})
+=======
     v.passDegreePercentage = Math.max((v.passDegreePercentage ?? 0) / 100, 0)
-    const id = await this.examsService.save(v).then(x => x.id)
+    const id = await this.examsService.save(this.model.id, v).then(x => x.id)
     this.dialogRef.close({ ...v, id })
+>>>>>>> Stashed changes
   }
 
 }

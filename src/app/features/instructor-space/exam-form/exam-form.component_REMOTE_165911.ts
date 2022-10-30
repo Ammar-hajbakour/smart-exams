@@ -31,7 +31,7 @@ export class ExamFormComponent implements OnInit {
     if (form.invalid) return
     const v = { ...this.model }
     v.passDegreePercentage = Math.max((v.passDegreePercentage ?? 0) / 100, 0)
-    const id = await this.examsService.save(v).then(x => x.id)
+    const id = await this.examsService.save(this.model.id, v).then(x => x.id)
     this.dialogRef.close({ ...v, id })
   }
 
