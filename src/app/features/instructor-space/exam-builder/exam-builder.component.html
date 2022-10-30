@@ -4,7 +4,7 @@
         <div class="flex-start" style="display: flex; flex-flow: row;">
             <h2>{{_exam.name}}</h2>
             <span class="spacer"></span>
-            <button (click)="save()" color="primary" mat-stroked-button>
+            <button (click)="saveQuestions()" color="primary" mat-stroked-button>
                 <mat-icon>save</mat-icon>
                 Save
             </button>
@@ -34,10 +34,13 @@
 
                     </div>
                     <div class="row answer" *ngFor="let choice of q.choices; let i = index">
-                        <mat-checkbox [value]="correctAnswers[index]"></mat-checkbox>
+                        <mat-checkbox (change)="setCorrectAnswer(q,choice,$event)"
+                            [checked]="correctAnswers[q.id].indexOf(choice.value) > -1">
+                        </mat-checkbox>
                         <mat-form-field>
                             <mat-label>Type answer here</mat-label>
-                            <input matInput [value]="choice.display" (input)="changeChoiceValue(choice, $event)" name="choice">
+                            <input matInput [value]="choice.display" (input)="changeChoiceValue(choice, $event)"
+                                name="choice">
                         </mat-form-field>
                         <button (click)="deleteItemFrom(q.choices,index)" mat-icon-button color="warn">
                             <mat-icon>do_not_disturb_on</mat-icon>

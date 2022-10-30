@@ -3,6 +3,7 @@ import { Firestore, collection, addDoc, doc, collectionData, deleteDoc, docData,
 import { firstValueFrom } from 'rxjs';
 import { Exam, Question } from '../models/exam.model';
 import { ExamResponse } from '../models/response.model';
+import { DatabaseService } from './data-base.service';
 
 
 
@@ -14,6 +15,8 @@ export class ExamResponsesService {
 
 
   private readonly collectionName = "responses";
+  private readonly database = new DatabaseService(this.store, this.collectionName)
+
   constructor(private store: Firestore) { }
 
 
@@ -29,39 +32,25 @@ export class ExamResponsesService {
 
 
   save(id: string | null, response: Partial<ExamResponse>): Promise<Partial<ExamResponse>> {
-    if (id) return this.updateResponse(id, response);
-    else return this.createResponse(response);
+    return this.database.save(id, response)
   }
 
   async createResponse(response: Partial<ExamResponse>) {
-    let ref = collection(this.store, this.collectionName);
-    const id = await addDoc(ref, response).then(c => c.id)
-    return { ...response, id }
+    return this.database.create(response)
   }
 
   async updateResponse(id: string, response: Partial<ExamResponse>) {
-    let ref = doc(this.store, `${this.collectionName}/${id}`);
-    const res = { ...response }
-    if (res.id) delete res.id
-    await updateDoc(ref, res);
-    return response
+    return this.database.update(id, response)
   }
 
 
   async getExams(filter?: any) {
-    let subjectsRef = collection(this.store, this.collectionName);
-    return await firstValueFrom(collectionData(subjectsRef, { idField: 'id' })) as Exam[];
+    return this.database.list(filter)
   }
   async deleteExam(id: string) {
-    let subjectRef = doc(this.store, `${this.collectionName}/${id}`);
-    return await deleteDoc(subjectRef);
+    return this.database.delete(id)
   }
   async getExamById(id: string) {
-    let subjectRef = doc(this.store, `${this.collectionName}/${id}`);
-    const exam = await firstValueFrom(docData(subjectRef)) as Exam;
-    if (!exam)
-      throw new Error("Exam not found");
-
-    return { ...exam, id };
+    return this.database.getById(id)
   }
 }

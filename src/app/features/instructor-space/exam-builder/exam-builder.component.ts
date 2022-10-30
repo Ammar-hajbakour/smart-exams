@@ -14,7 +14,7 @@ export class ExamBuilderComponent implements OnInit {
 
   questions: Question[] = []
   // exam: Exam = new Exam()
-  correctAnswers: string[] = []
+  correctAnswers: { [questionId: string]: (string | number)[] } = {}
   active: any
 
   exam!: Exam
@@ -23,11 +23,12 @@ export class ExamBuilderComponent implements OnInit {
       if (!ps['id']) return throwError(() => new Error('Exam Id should be provided!'))
       return this.examsService.getExamById(ps['id'])
     }),
-    tap((exam: Exam) => {
+    tap((exam: any) => {
       if (exam) {
         this.exam = exam
         this.questions = exam.questions
         this.active = this.questions[0]
+        this.questions.forEach(q => this.correctAnswers[q.id] = this.exam.correctAnswers?.[q.id] ?? [])
       }
     }))
   constructor(private route: ActivatedRoute, private examsService: ExamsService) {
@@ -37,14 +38,21 @@ export class ExamBuilderComponent implements OnInit {
   changeChoiceValue(c: any, e: any) {
     c.display = e.target.value
   }
-  addQuestion(array: Array<Question>) {
+  async addQuestion(array: Array<Question>) {
     array.push(new Question())
     this.active = array[array.length - 1]
-
+    this.correctAnswers[this.active.id] = []
+    await this.saveQuestions()
   }
 
 
-
+  async setCorrectAnswer(q: any, choice: any, value: any) {
+    if (value.checked) {
+      this.correctAnswers[q.id].push(choice.value)
+    }
+    else this.correctAnswers[q.id] = this.correctAnswers[q.id].filter(v => v !== choice.value)
+    await this.updateCorrectAnswers()
+  }
   addOption(q: Question) {
     q.choices.push({ display: '', value: makeid() })
   }
@@ -53,8 +61,11 @@ export class ExamBuilderComponent implements OnInit {
     array.splice(index, 1)
   }
 
-  async save() {
-    await this.examsService.updateExamQuestions(this.exam.id, this.questions)
+  async saveQuestions() {
+    await this.examsService.update(this.exam.id, { questions: this.questions })
+  }
+  async updateCorrectAnswers() {
+    await this.examsService.update(this.exam.id, { correctAnswers: this.correctAnswers })
   }
   ngOnInit(): void {
     this.exam$.subscribe(e => this.exam = e)

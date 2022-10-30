@@ -5,7 +5,7 @@ export class Exam {
     category: string = ''
     duration: number = 120
     passDegreePercentage: number = 60
-    correctAnswers: string[] = []
+    correctAnswers: { [questionId: string]: (string | number)[] } = {}
     status: 'building' | 'review' | 'published' | 'archived' = 'building'
 
     answerInstructions!:string

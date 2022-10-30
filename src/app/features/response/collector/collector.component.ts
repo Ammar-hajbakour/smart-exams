@@ -22,7 +22,7 @@ export class CollectorComponent {
   exam$: Observable<Exam> = combineLatest([this.route.params, this.auth.user$]).pipe(
     filter(([ps, user]) => ps['exam'] != this.exam?.id),
     switchMap(([ps, user]) => this.examsService.getExamById(ps['exam'])),
-    tap((exam: Exam) => this.exam = exam),
+    tap((exam: any) => this.exam = exam),
     switchMap(exam => this.responsesService.getUserResponse(this.auth.user.id, this.exam.id)),
     tap((response: ExamResponse) => {
       if (response) {
