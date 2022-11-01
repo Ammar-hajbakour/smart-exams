@@ -1,4 +1,7 @@
 :host {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
 
     .flex-row {
         display: flex;

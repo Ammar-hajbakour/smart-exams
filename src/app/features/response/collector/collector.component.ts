@@ -6,6 +6,7 @@ import { ExamResponse } from 'src/app/models/response.model';
 import { ExamResponsesService } from 'src/app/shared/exam-responses.service';
 
 import { ExamsService } from 'src/app/shared/exams.service';
+import { environment } from 'src/environments/environment';
 import { AuthService } from '../../membership/services/auth.service';
 
 @Component({
@@ -15,6 +16,7 @@ import { AuthService } from '../../membership/services/auth.service';
 })
 export class CollectorComponent {
 
+  disabled = false
   active: Question | null = null
   exam!: Exam
   response!: ExamResponse
@@ -31,10 +33,13 @@ export class CollectorComponent {
           throwError(() => new Error('Can not retake this exam!'))
 
         this.response = response
+        if(!response.endTime)this.startAnswer()
+        else this.disabled = true
       }
       else {
         this.response = new ExamResponse(this.auth.user.id, this.exam.id, this.exam.instructorId)
         this.exam.questions.forEach(q => this.response.answers[q.id] = [])
+
       }
 
     }),
@@ -59,23 +64,33 @@ export class CollectorComponent {
   }
 
   async answerChange(q: Question, choice: { value: string | number, display: string }, event: any) {
+    if(this.disabled) return
+
     let value = (this.response.answers[q.id] ?? [])
     if (event.checked) value.push(choice.value)
     else value = value.filter(v => v !== choice.value)
 
     this.response.answers[q.id] = value
 
+    await this.save();
+
+  }
+  async save() {
+    if(this.disabled) return
     if (this.response.id)
       await this.responsesService.updateResponse(this.response.id, { answers: this.response.answers });
     else {
-      const { id } = await this.responsesService.createResponse({ ...this.response })
-      this.response.id = id
+      const { id } = await this.responsesService.createResponse({ ...this.response });
+      this.response.id = id;
     }
   }
 
-  startAnswer() {
-    this.response.startTime = Date.now()
+  async startAnswer() {
+    if (!this.response.startTime) this.response.startTime = Date.now()
     this.stopTime = this.response.startTime + (this.exam.duration * 60000)
+
+
+    if (environment.production && !this.response.id) await this.save();
   }
 
   async submit() {
@@ -83,6 +98,7 @@ export class CollectorComponent {
     // when submittion is don show any message to tell user.
 
     this.response.endTime = Date.now()
+    this.stopTime = this.response.endTime
     this.response.status = 'finished'
 
     await this.responsesService.updateResponse(this.response.id, {

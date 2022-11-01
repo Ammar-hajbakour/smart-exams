@@ -1,8 +1,8 @@
 <ng-container *ngIf="exam$|async as _exam">
     <ng-container *ngIf="_exam !== null">
 
-        <div class="intro" *ngIf="response.startTime === null; else answesTemplate">
-            <h2 class="intro-title">Answer Instruction </h2>
+        <div class="body container intro" *ngIf="response.startTime === null; else answesTemplate">
+            <h2 class="title">Answer Instruction </h2>
             <p class="intro-details">{{_exam.answerInstructions}}</p>
             <button color="primary" mat-stroked-button (click)="startAnswer()">Start <span class="spacer"></span><span
                     class="exam-duration">Exam
@@ -10,8 +10,8 @@
         </div>
 
         <ng-template #answesTemplate>
-
-            <ng-container *ngIf="_exam.questions.length">
+            <div class="body container" *ngIf="_exam.questions.length">
+                <h2 class="title">{{_exam.name}}</h2>
                 <div class="question-wrapper" [class.active]="active === q" (click)="active = q"
                     *ngFor="let q of _exam.questions;let index=index">
 
@@ -19,23 +19,23 @@
                         <h2>{{q.text}}</h2>
                     </div>
                     <div class="row answer" *ngFor="let choice of q.choices; let i = index">
-                        <mat-checkbox [checked]="response.answers[q.id].indexOf(choice.value) > -1"
+                        <mat-checkbox [disabled]="disabled" [checked]="response.answers[q.id].indexOf(choice.value) > -1"
                             (change)="answerChange(q,choice, $event)">{{choice.display}}</mat-checkbox>
                     </div>
                 </div>
-            </ng-container>
-
-            <div class="collector-footer" style="display: flex;" *ngIf="response.startTime">
+            </div>
+            <div *ngIf="!response.endTime" class="footer">
                 <div class="container">
-                    <button mat-button color="primary" (click)="submit()">
+                    <button mat-raised-button color="accent" (click)="submit()">
                         <mat-icon>done</mat-icon>Submit
                     </button>
-                    <span class="spacer"></span>
                     <app-timer *ngIf="stopTime" [start]="stopTime !== null" class="timer" (timeOut)="timeOut()"
-                        [startTime]="response.startTime" [endTime]="stopTime">
+                        [startTime]="response.startTime!" [endTime]="stopTime">
                     </app-timer>
+                    
                 </div>
             </div>
         </ng-template>
+
     </ng-container>
 </ng-container>

@@ -82,3 +82,17 @@ body {
 .mie {
   margin-inline-end: 1rem;
 }
+
+.mat-drawer-container {
+  height: 100%;
+}
+
+app-collector {
+
+  app-timer {
+    span {
+      color: #ff00aa;
+      font-size: 1.5rem;
+    }
+  }
+}
