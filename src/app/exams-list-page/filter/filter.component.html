@@ -1,0 +1,32 @@
+<form>
+    <!-- <mat-form-field class="search" appearance="outline">
+        <mat-label>Search by name</mat-label>
+        <input matInput>
+    </mat-form-field> -->
+    <mat-form-field appearance="outline">
+        <mat-label>Instructor</mat-label>
+        <mat-select multiple>
+            <mat-option *ngFor="let instructor of instructors" [value]="instructor">{{instructor | titlecase}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select multiple>
+            <mat-option *ngFor="let category of categories" [value]="category">{{category | titlecase}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Level</mat-label>
+        <mat-select multiple>
+            <mat-option *ngFor="let l of level" [value]="l">{{l | titlecase}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!-- <section class="exam-status">
+        <mat-checkbox class="example-margin">Hidden</mat-checkbox>
+        <mat-checkbox class="example-margin">Active</mat-checkbox>
+    </section> -->
+
+    <button color="primary" mat-button type="submit">Apply Filter</button>
+</form>

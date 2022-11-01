@@ -1,0 +1,19 @@
+<ng-container *ngIf="auth.user$ | async as _user">
+    <a href="javascript:;" [matMenuTriggerFor]="menu"><img src="/assets/images/testimonial-1.png"></a>
+
+
+    <mat-menu #menu="matMenu">
+        <a routerLink="/{{ls.language}}/instructor" *ngIf="_user.roles.indexOf('instructor') > -1" mat-menu-item>
+            <mat-icon>dialpad</mat-icon>
+            <span>My space</span>
+        </a>
+        <a routerLink="/{{ls.language}}/student/my-responses" *ngIf="_user.roles.length === 0" mat-menu-item>
+            <mat-icon>voicemail</mat-icon>
+            <span>My Responses</span>
+        </a>
+        <button (click)="auth.logout()" mat-menu-item>
+            <mat-icon>notifications_off</mat-icon>
+            <span>Sign out</span>
+        </button>
+    </mat-menu>
+</ng-container>

@@ -1,0 +1,59 @@
+:host {
+
+
+
+    .exam-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        height: 100%;
+
+        .image-sec {
+            .exam-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .info-sec {
+            padding-inline: 1rem;
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            height: 100%;
+
+            .exam-name {
+                display: flex;
+                font-size: 4rem;
+                font-weight: 600;
+                line-height: 2;
+                color: #333;
+                // margin-block-end: 3rem;
+
+                span.level {
+                    font-size: 16px;
+                    font-weight: 500;
+                    background: gold;
+                    padding: 0.5rem;
+                    writing-mode: vertical-rl;
+                    text-align: center;
+                }
+            }
+
+            p {
+                font-size: 12px;
+                line-height: 2;
+                text-align: justify;
+            }
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            // margin-block-start: 4rem;
+
+
+        }
+    }
+}

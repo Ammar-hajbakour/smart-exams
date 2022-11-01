@@ -1,12 +1,12 @@
 export class ExamResponse {
     id!: string
 
-    constructor(public userId: string, public examId: string) { }
+    constructor(public userId: string, public examId: string, instructorId: string) { }
 
     answers: { [questionId: string]: (string | number)[] } = {}
 
     result: number = 0
     status: 'started' | 'finished' = 'started'
-    startTime: number = Date.now()
+    startTime: number | null = null
     endTime: number | null = null
 }

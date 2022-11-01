@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LanguageService } from '@upupa/language';
+import { AuthService } from '../features/membership/services/auth.service';
 
 @Component({
   selector: 'app-simple-layout',
@@ -8,7 +9,7 @@ import { LanguageService } from '@upupa/language';
 })
 export class SimpleLayoutComponent implements OnInit {
 
-  constructor(public ls: LanguageService) { }
+  constructor(public ls: LanguageService, public auth: AuthService) { }
 
   ngOnInit(): void {
   }

@@ -29,14 +29,14 @@ export class ExamResponsesService {
 
     return res.docs.shift()?.data() as ExamResponse
   }
-  async listUserResponses(userId: string): Promise<ExamResponse[]> {
+  async listUserResponses<T = ExamResponse>(userId: string): Promise<T[]> {
     let ref = collection(this.store, this.collectionName);
 
     const q = query(ref, where("userId", "==", userId))
     const res = await getDocs(q)
 
 
-    return await firstValueFrom(collectionData(q, { idField: "id" })) as ExamResponse[]
+    return await firstValueFrom(collectionData(q, { idField: "id" })) as T[]
   }
 
   save(id: string | null, response: Partial<ExamResponse>): Promise<Partial<ExamResponse>> {

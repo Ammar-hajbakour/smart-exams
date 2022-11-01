@@ -25,7 +25,7 @@ export class CollectorComponent {
     tap((exam: any) => this.exam = exam),
     switchMap(exam => this.responsesService.getUserResponse(this.auth.user.id, this.exam.id)),
     tap((response: ExamResponse) => {
-      if (response) {
+      if (response && response.startTime) {
         const left = ((response.endTime ?? Date.now()) - response.startTime) / 60000
         if (response.endTime || (response.status !== 'finished' && this.exam.duration <= left))
           throwError(() => new Error('Can not retake this exam!'))
@@ -33,7 +33,7 @@ export class CollectorComponent {
         this.response = response
       }
       else {
-        this.response = new ExamResponse(this.auth.user.id, this.exam.id)
+        this.response = new ExamResponse(this.auth.user.id, this.exam.id, this.exam.instructorId)
         this.exam.questions.forEach(q => this.response.answers[q.id] = [])
       }
 

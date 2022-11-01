@@ -1,14 +1,17 @@
 export class Exam {
     id!: string
+    image!: { name: string, url: string }
     constructor(public instructorId: string, public name: string) { }
+    instructorName!: string
+    description!: string
     questions: Question[] = []
     category: string = ''
     duration: number = 120
     passDegreePercentage: number = 60
     correctAnswers: { [questionId: string]: (string | number)[] } = {}
     status: 'building' | 'review' | 'published' | 'archived' = 'building'
-
-    answerInstructions!:string
+    level: 'basic' | 'medium' | 'advanced' = 'basic'
+    answerInstructions!: string
 
     shuffle: boolean = false
     show1by1: boolean = false

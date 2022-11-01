@@ -2,15 +2,22 @@
     .exams-list {
         margin-block-start: 1rem;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 250px));
         gap: 1rem;
 
         mat-card {
-            mat-action-row {
+            .actions {
+
                 button {
                     margin-inline-end: .5rem !important;
                 }
             }
         }
     }
+}
+
+.level {
+    color: #ff4081;
+    font-size: 12px;
+    margin-inline-start: 1rem;
 }

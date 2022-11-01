@@ -48,32 +48,17 @@ body {
   box-sizing: border-box;
 }
 
-.mat-drawer-container {
-  display: flex;
-  flex-flow: column;
-  height: calc(100% - 56px);
-}
-
-.mat-drawer {
-  width: 200px;
-  max-width: 200px;
-}
-
 .cp-links {
   display: flex;
   flex-flow: column nowrap;
-  max-width: 200px;
   padding: .5rem 1rem;
 }
 
-.mat-toolbar-single-row {
-  max-height: 56px;
-}
 
 .container {
-  height: 100%;
   width: 100%;
-  padding: 1rem;
+  max-width: 1180px;
+  margin-inline: auto;
 }
 
 .mat-form-field-wrapper {
@@ -88,4 +73,12 @@ body {
 
 .spacer {
   flex: 1 1 auto;
+}
+
+.mbs {
+  margin-block-start: 1rem;
+}
+
+.mie {
+  margin-inline-end: 1rem;
 }

@@ -1,5 +1,25 @@
 :host {
 
+    .flex-row {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+
+        &.cp-links>.cp-link {
+
+
+            &.active {
+                color: pink;
+
+            }
+
+            margin-inline-end: 1rem;
+            color: white;
+            text-decoration: none;
+            transition: color 0.25s ease-in;
+        }
+
+    }
 
     footer {
         background: lightblue;

@@ -1,16 +1,3 @@
-<!-- <mat-toolbar>
-    <span>Smart Exams</span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>favorite</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>share</mat-icon>
-    </button>
-</mat-toolbar>
-<div class="container">
-    <router-outlet></router-outlet>
-</div> -->
 <mat-toolbar color="primary">
     <button mat-icon-button (click)="drawer.toggle()" class="example-icon"
         aria-label="Example icon-button with menu icon">
@@ -18,18 +5,21 @@
     </button>
     <span>My App</span>
     <span class="spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>favorite</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>share</mat-icon>
-    </button>
+    <div class="cp-links flex-row">
+        <a class="cp-link" routerLink="/{{ls.language}}/home" [routerLinkActive]="'active'">Home</a>
+        <a class="cp-link" routerLink="/{{ls.language}}/exams" [routerLinkActive]="'active'">Exams</a>
+        <app-user-menu *ngIf="auth.user$ | async; else userNav"></app-user-menu>
+        <ng-template #userNav>
+            <a class="cp-link" routerLink="/{{ls.language}}/account/login" [routerLinkActive]="'active'">Login</a>
+            <a class="cp-link" routerLink="/{{ls.language}}/account/register" [routerLinkActive]="'active'">Register</a>
+        </ng-template>
+    </div>
 </mat-toolbar>
 <mat-drawer-container class="example-container">
-    <mat-drawer #drawer [mode]="'side'" [opened]="true">
+    <mat-drawer #drawer [mode]="'side'" [opened]="false">
         <div class="cp-links">
             <a class="cp-link" routerLink="/{{ls.language}}/home" [routerLinkActive]="'active'">Home</a>
-            <a class="cp-link" routerLink="/{{ls.language}}/Exams" [routerLinkActive]="'active'">Exams</a>
+            <a class="cp-link" routerLink="/{{ls.language}}/exams" [routerLinkActive]="'active'">Exams</a>
             <a class="cp-link" routerLink="/{{ls.language}}/account/login" [routerLinkActive]="'active'">Login</a>
             <a class="cp-link" routerLink="/{{ls.language}}/account/register" [routerLinkActive]="'active'">Register</a>
         </div>
@@ -38,6 +28,5 @@
         <div class="container">
             <router-outlet></router-outlet>
         </div>
-        <footer>Footer</footer>
     </mat-drawer-content>
 </mat-drawer-container>

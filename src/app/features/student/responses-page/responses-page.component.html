@@ -1,1 +1,2 @@
-<app-responses-list [actions]="actions" (elementAction)="handleUserAction($event)"></app-responses-list>
+<app-responses-list [data]="data$ | async" [actions]="actions" (elementAction)="handleUserAction($event)">
+</app-responses-list>

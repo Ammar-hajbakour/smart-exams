@@ -1,4 +1,5 @@
 export class Filter {
-    name?: string = ''
-    category?: string = ''
+    instructorName?: string
+    category?: string
+    level?: 'basic' | 'medium' | 'advanced'
 }

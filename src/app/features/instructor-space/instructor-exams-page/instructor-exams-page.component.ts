@@ -42,6 +42,9 @@ export class InstructorExamsPageComponent implements OnInit {
 
   async addOrEditExam(examId?: string) {
     const result = await firstValueFrom(this.dialog.open(ExamFormComponent, {
+      width: '95%',
+      maxWidth: '500px',
+
       disableClose: true,
       data: { instructorId: this.auth.user.id, examId }
     }).afterClosed());
