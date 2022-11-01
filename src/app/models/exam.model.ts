@@ -1,3 +1,5 @@
+export type PointsCalculationStrategy = 'count-only-correct-answers' | 'count-all'
+
 export class Exam {
     id!: string
     image!: { name: string, url: string }
@@ -12,6 +14,8 @@ export class Exam {
     status: 'building' | 'review' | 'published' | 'archived' = 'building'
     level: 'basic' | 'medium' | 'advanced' = 'basic'
     answerInstructions!: string
+    calcStrategy!: PointsCalculationStrategy
+
 
     shuffle: boolean = false
     show1by1: boolean = false
@@ -23,7 +27,11 @@ export class Question {
     choices: { display: string, value: string | number }[] = []
     shuffleChoices: boolean = false
     points = 1
-    isSingleChoice?: boolean = true // do not implement this
+
+    // in collector allow user to select as many as allowedChoices ?? question.choices.length
+    allowedChoices: number | null = null
+
+    calcStrategy!: PointsCalculationStrategy
 }
 
 

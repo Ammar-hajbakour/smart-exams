@@ -33,11 +33,12 @@ export class CollectorComponent {
           throwError(() => new Error('Can not retake this exam!'))
 
         this.response = response
-        if(!response.endTime)this.startAnswer()
+        if (!response.endTime) this.startAnswer()
         else this.disabled = true
       }
       else {
         this.response = new ExamResponse(this.auth.user.id, this.exam.id, this.exam.instructorId)
+        this.response.instructor = this.exam.instructorName
         this.exam.questions.forEach(q => this.response.answers[q.id] = [])
 
       }
@@ -60,11 +61,11 @@ export class CollectorComponent {
 
   async timeOut() {
     //alert time out
-    await this.submit()
+    if (!this.disabled || !this.response.endTime) await this.submit()
   }
 
   async answerChange(q: Question, choice: { value: string | number, display: string }, event: any) {
-    if(this.disabled) return
+    if (this.disabled) return
 
     let value = (this.response.answers[q.id] ?? [])
     if (event.checked) value.push(choice.value)
@@ -76,7 +77,7 @@ export class CollectorComponent {
 
   }
   async save() {
-    if(this.disabled) return
+    if (this.disabled) return
     if (this.response.id)
       await this.responsesService.updateResponse(this.response.id, { answers: this.response.answers });
     else {
@@ -96,7 +97,7 @@ export class CollectorComponent {
   async submit() {
     // disable collector form and submit directly and show submitting indicator
     // when submittion is don show any message to tell user.
-
+    this.disabled = true
     this.response.endTime = Date.now()
     this.stopTime = this.response.endTime
     this.response.status = 'finished'
@@ -106,5 +107,31 @@ export class CollectorComponent {
       status: this.response.status,
       answers: this.response.answers
     })
+
+
+    const cas = this.exam.correctAnswers
+    const userPoints = Object.getOwnPropertyNames(this.response.answers).map(qid => {
+      const questionCorrectAnswers = cas[qid]
+      const userCorrectAnswers = questionCorrectAnswers.filter(qca => this.response.answers[qid].indexOf(qca) > -1).length
+      const question = this.exam.questions.find(q => q.id === +qid) as Question
+      const questionPoints = (question?.points) ?? 1
+      const qChoicePoints = questionPoints / (question?.choices ?? [0]).length
+
+      if (this.response.answers[qid].length === userCorrectAnswers && userCorrectAnswers === questionCorrectAnswers.length) return question?.points ?? 1
+      else {
+        if (question.calcStrategy === 'count-all') {
+          return qChoicePoints * (userCorrectAnswers - (this.response.answers[qid].length - userCorrectAnswers))
+        }
+        else return 0
+      }
+    }).reduce((p1, p2) => p1 + p2, 0)
+    
+    const total = this.exam.questions.map(q => q.points ?? 1).reduce((p1, p2) => p1 + p2, 0)
+    const pass = (100 * userPoints / total) >= this.exam.passDegreePercentage
+
+    alert(pass === true ?
+      `Instructor ${this.response.instructor} wants to congrats you for completing this exam and passing it with ${userPoints} of ${total}` :
+      `Instructor wants to say F*** you for getting ${userPoints} of ${total}`
+    )
   }
 }

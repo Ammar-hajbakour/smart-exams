@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Exam } from 'src/app/models/exam.model';
 import { ExamsService } from 'src/app/shared/exams.service';
+import { AuthService } from '../../membership/services/auth.service';
 import { dataUrlToFile } from './dataUrlToFile';
 
 @Component({
@@ -13,6 +14,7 @@ import { dataUrlToFile } from './dataUrlToFile';
 export class ExamFormComponent implements OnInit {
 
   constructor(
+    private auth: AuthService,
     private examsService: ExamsService,
     private dialogRef: MatDialogRef<ExamFormComponent>,
     @Inject(MAT_DIALOG_DATA) private data: { instructorId: string, examId?: string }
@@ -36,7 +38,7 @@ export class ExamFormComponent implements OnInit {
 
   async submit(form: NgForm) {
     if (form.invalid) return
-    const v = { ...this.model }
+    const v = { ...this.model, instructorName: this.auth.user.name }
     const id = await this.examsService.save(this.model.id, v).then(x => x.id)
     this.dialogRef.close({ ...v, id })
   }
