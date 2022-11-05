@@ -9,6 +9,7 @@ import { ExamsListComponent } from './exams-list/exams-list.component';
 import { TimerComponent } from './timer/timer.component';
 import { UserMenuComponent } from './user-menu/user-menu.component';
 import { RouterModule } from '@angular/router';
+import { ResltComponent } from './reslt/reslt.component';
 
 const imports = [CommonModule,
   TranslationModule,
@@ -17,7 +18,7 @@ const imports = [CommonModule,
   RouterModule,
   ...MatrialCommon]
 
-const declarations = [ResponsesListComponent, ExamsListComponent, TimerComponent, UserMenuComponent]
+const declarations = [ResponsesListComponent, ExamsListComponent, ResltComponent, TimerComponent, UserMenuComponent]
 @NgModule({
   declarations: [...declarations],
   imports: [...imports],

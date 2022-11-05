@@ -9,8 +9,10 @@
                     duration {{exam.duration}} minutes</span></button>
         </div>
 
+
+
         <ng-template #answesTemplate>
-            <div class="body container" *ngIf="_exam.questions.length">
+            <div class="body container" *ngIf="_exam.questions.length && !resultShow ; else result">
                 <h2 class="title">{{_exam.name}}</h2>
                 <div class="question-wrapper" [class.active]="active === q" (click)="active = q"
                     *ngFor="let q of _exam.questions;let index=index">
@@ -19,23 +21,46 @@
                         <h2>{{q.text}}</h2>
                     </div>
                     <div class="row answer" *ngFor="let choice of q.choices; let i = index">
-                        <mat-checkbox [disabled]="disabled" [checked]="response.answers[q.id].indexOf(choice.value) > -1"
+                        <mat-checkbox [disabled]="disabled"
+                            [checked]="response.answers[q.id].indexOf(choice.value) > -1"
                             (change)="answerChange(q,choice, $event)">{{choice.display}}</mat-checkbox>
                     </div>
                 </div>
             </div>
-            <div *ngIf="!response.endTime" class="footer">
+            <ng-template #result>
+                <div class="container body">
+                    <app-reslt [response]="response"></app-reslt>
+                </div>
+            </ng-template>
+            <div class="footer">
                 <div class="container">
-                    <button mat-raised-button color="accent" (click)="submit()">
-                        <mat-icon>done</mat-icon>Submit
-                    </button>
-                    <app-timer *ngIf="stopTime" [start]="stopTime !== null" class="timer" (timeOut)="timeOut()"
-                        [startTime]="response.startTime!" [endTime]="stopTime">
-                    </app-timer>
-                    
+                    <ng-container *ngIf="!response.endTime">
+                        <button mat-raised-button color="accent" (click)="submit()">
+                            <mat-icon>done</mat-icon>Submit
+                        </button>
+                        <app-timer *ngIf="stopTime" [start]="stopTime !== null" class="timer" (timeOut)="timeOut()"
+                            [startTime]="response.startTime!" [endTime]="stopTime">
+                        </app-timer>
+                    </ng-container>
+                    <ng-container *ngIf="response.endTime">
+
+                        <ng-container *ngIf="!resultShow">
+                            <button (click)="resultShow = true" mat-raised-button>Result</button>
+                            <div class="links">
+                                <button style="margin-inline-end: .5rem;" routerLink="/{{ls.language}}/exams"
+                                    mat-raised-button>Exams</button>
+                                <button routerLink="/{{ls.language}}/home" mat-raised-button>Home</button>
+                            </div>
+
+                        </ng-container>
+                        <ng-container *ngIf="resultShow">
+                            <button (click)="resultShow = false" mat-raised-button>Back</button>
+                        </ng-container>
+                    </ng-container>
                 </div>
             </div>
         </ng-template>
+
 
     </ng-container>
 </ng-container>

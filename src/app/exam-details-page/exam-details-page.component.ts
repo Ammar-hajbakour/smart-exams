@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
 import { LanguageService } from '@upupa/language';
 import { Observable, ReplaySubject, switchMap, tap, throwError } from 'rxjs';
 import { AuthService } from '../features/membership/services/auth.service';
@@ -21,11 +21,9 @@ export class ExamDetailsPageComponent implements OnInit {
     ,
     tap((exam: any) => exam)
   )
-  constructor(private route: ActivatedRoute, private examsService: ExamsService, public auth: AuthService, private router: Router, private ls: LanguageService) { }
+  constructor(private route: ActivatedRoute, private examsService: ExamsService, private auth: AuthService, private router: Router, public ls: LanguageService) { }
 
   ngOnInit(): void {
   }
-  subscribe(examId: string) {
-    this.router.navigate([`/${this.ls.language}/response/answer/${examId}`])
-  }
+
 }

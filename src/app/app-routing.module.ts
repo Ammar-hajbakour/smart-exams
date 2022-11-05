@@ -5,14 +5,14 @@ import { StudentGuard } from "./student-guard";
 import { ExamDetailsPageComponent } from './exam-details-page/exam-details-page.component';
 import { ExamsListPageComponent } from './exams-list-page/exams-list-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { InstructorGuard } from './instructor.guard';
+import { ExamGuard } from "./ExamGuard";
 import { SimpleLayoutComponent } from './simple-layout/simple-layout.component';
 import { ResponseGuard } from './simple-layout/response.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/en', pathMatch: 'full' },
   { path: ':lang/account', loadChildren: () => import('./features/membership/membership.module').then(m => m.MembershipModule) },
-  { path: ':lang/instructor', canActivateChild: [InstructorGuard], loadChildren: () => import('./features/instructor-space/instructor-space.module').then(m => m.InstructorSpaceModule) },
+  { path: ':lang/instructor', canActivateChild: [ExamGuard], loadChildren: () => import('./features/instructor-space/instructor-space.module').then(m => m.InstructorSpaceModule) },
   { path: ':lang/admin', canActivateChild: [AdminGuard], loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule) },
   { path: ':lang/student', canActivateChild: [StudentGuard], loadChildren: () => import('./features/student/student.module').then(m => m.StudentModule) },
   { path: ':lang/response', canActivateChild: [ResponseGuard], loadChildren: () => import('./features/response/response.module').then(m => m.ResponsesModule) },
@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
       { path: 'exams', component: ExamsListPageComponent },
-      { path: 'exam/:id', component: ExamDetailsPageComponent }
+      { path: 'exam/:id', canActivate: [ExamGuard], component: ExamDetailsPageComponent }
     ]
   }
 ];

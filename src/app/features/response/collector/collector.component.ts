@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, tap, Observable, throwError, filter, combineLatest, map } from 'rxjs';
+import { LanguageService } from '@upupa/language';
+import { switchMap, tap, Observable, throwError, filter, combineLatest, map, ReplaySubject } from 'rxjs';
 import { Exam, Question } from 'src/app/models/exam.model';
 import { ExamResponse } from 'src/app/models/response.model';
 import { ExamResponsesService } from 'src/app/shared/exam-responses.service';
@@ -20,7 +21,6 @@ export class CollectorComponent {
   active: Question | null = null
   exam!: Exam
   response!: ExamResponse
-
   exam$: Observable<Exam> = combineLatest([this.route.params, this.auth.user$]).pipe(
     filter(([ps, user]) => ps['exam'] != this.exam?.id),
     switchMap(([ps, user]) => this.examsService.getExamById(ps['exam'])),
@@ -39,6 +39,8 @@ export class CollectorComponent {
       else {
         this.response = new ExamResponse(this.auth.user.id, this.exam.id, this.exam.instructorId)
         this.response.instructor = this.exam.instructorName
+        this.response.examName = this.exam.name
+        this.response.userName = this.auth.user.name
         this.exam.questions.forEach(q => this.response.answers[q.id] = [])
 
       }
@@ -46,17 +48,23 @@ export class CollectorComponent {
     }),
     map(() => {
       const exam = { ...this.exam }
-      if (exam.shuffle === true) exam.questions = this.exam.questions.sort((q1, q2) => Math.random() - Math.random())
+      if (exam.shuffle === true) {
+        exam.questions = this.exam.questions.sort((q1, q2) => Math.random() - Math.random())
+        exam.questions.forEach(q => q.choices.sort((q1, q2) => Math.random() - Math.random()))
+      }
 
       return exam
     })
   )
   stopTime: number | null = null;
+  resultShow: boolean = false;
   constructor(
     private responsesService: ExamResponsesService,
     private auth: AuthService,
     private route: ActivatedRoute,
-    private examsService: ExamsService) { }
+    private examsService: ExamsService,
+    public ls: LanguageService
+  ) { }
 
 
   async timeOut() {
@@ -102,11 +110,7 @@ export class CollectorComponent {
     this.stopTime = this.response.endTime
     this.response.status = 'finished'
 
-    await this.responsesService.updateResponse(this.response.id, {
-      endTime: this.response.endTime,
-      status: this.response.status,
-      answers: this.response.answers
-    })
+
 
 
     const cas = this.exam.correctAnswers
@@ -125,13 +129,22 @@ export class CollectorComponent {
         else return 0
       }
     }).reduce((p1, p2) => p1 + p2, 0)
-    
-    const total = this.exam.questions.map(q => q.points ?? 1).reduce((p1, p2) => p1 + p2, 0)
-    const pass = (100 * userPoints / total) >= this.exam.passDegreePercentage
 
-    alert(pass === true ?
-      `Instructor ${this.response.instructor} wants to congrats you for completing this exam and passing it with ${userPoints} of ${total}` :
-      `Instructor wants to say F*** you for getting ${userPoints} of ${total}`
-    )
+    const total = this.exam.questions.map(q => q.points ?? 1).reduce((p1, p2) => p1 + p2, 0)
+    this.response.result = 100 * userPoints / total
+
+
+
+    await this.responsesService.updateResponse(this.response.id, {
+      endTime: this.response.endTime,
+      status: this.response.status,
+      answers: this.response.answers,
+      result: this.response.result,
+      passDegreePercentage: this.exam.passDegreePercentage
+
+    })
+
+    this.resultShow = true
+
   }
 }

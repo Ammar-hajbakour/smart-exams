@@ -51,13 +51,12 @@ body {
 .cp-links {
   display: flex;
   flex-flow: column nowrap;
-  padding: .5rem 1rem;
 }
 
 
 .container {
   width: 100%;
-  max-width: 1180px;
+  // max-width: 1180px;
   margin-inline: auto;
 }
 
@@ -95,4 +94,8 @@ app-collector {
       font-size: 1.5rem;
     }
   }
+}
+
+.mat-drawer {
+  padding: 1rem;
 }

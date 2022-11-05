@@ -1,12 +1,11 @@
 :host {
 
-
-
     .exam-details {
+        min-height: calc(100vh - 60px);
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr;
-        height: 100%;
+        grid-template-columns: 1fr;
+        grid-template-rows: 350px 1fr;
+        place-content: center;
 
         .image-sec {
             .exam-image {
@@ -17,43 +16,55 @@
         }
 
         .info-sec {
-            padding-inline: 1rem;
-            display: flex;
-            flex-flow: column nowrap;
-            justify-content: center;
             height: 100%;
+            display: flex;
 
-            .exam-name {
-                display: flex;
-                font-size: 4rem;
-                font-weight: 600;
-                line-height: 2;
-                color: #333;
-                // margin-block-end: 3rem;
+            .sticker {
+                font-size: 20px;
+                font-weight: 500;
+                background: #3f51b5;
+                padding: 1rem;
+                writing-mode: vertical-rl;
+                text-align: start;
+                color: white;
 
-                span.level {
-                    font-size: 16px;
-                    font-weight: 500;
-                    background: gold;
-                    padding: 0.5rem;
-                    writing-mode: vertical-rl;
-                    text-align: center;
+            }
+
+            .text {
+                .exam-name {
+                    padding-inline: 1rem;
+                    display: flex;
+                    font-size: 4rem;
+                    font-weight: 600;
+                    line-height: 1.75;
+                    color: #444;
+                    margin: 0;
+                    background-color: gold;
+
+                }
+
+                p {
+                    line-height: 2;
+                    text-align: justify;
+                    padding-inline: 1rem;
+                    margin: 0;
+                    margin-block-start: 1rem;
+
+                    strong {
+                        letter-spacing: 1px;
+                    }
+
                 }
             }
 
-            p {
-                font-size: 12px;
-                line-height: 2;
-                text-align: justify;
+            .actions {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                padding: 1rem;
+
+
             }
-        }
-
-        .actions {
-            display: flex;
-            align-items: center;
-            // margin-block-start: 4rem;
-
-
         }
     }
 }

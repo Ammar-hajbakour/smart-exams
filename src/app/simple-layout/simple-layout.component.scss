@@ -3,6 +3,10 @@
     flex-flow: column;
     height: 100%;
 
+    .container {
+        padding: 1rem;
+    }
+
     .flex-row {
         display: flex;
         flex-flow: row nowrap;

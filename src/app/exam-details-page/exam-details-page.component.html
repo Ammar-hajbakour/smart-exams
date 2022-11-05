@@ -1,22 +1,31 @@
 <ng-container *ngIf="exam$ | async as exam">
     <div class="exam-details">
-
-        <section class="info-sec">
-            <h1 class="exam-name">
-                {{exam.name}} 
-                <span class="spacer"></span>
-                <span class="level">{{exam.level | titlecase}}</span>
-            </h1>
-            <p class="exam-desc">{{exam.description}}</p>
-            <ng-container *ngIf="auth.user$ | async as user">
-                <div class="actions" *ngIf="user.roles.indexOf('student') > -1">
-                    <button (click)="subscribe(exam.id)" color="warn" mat-flat-button>Subscribe</button>
-                </div>
-            </ng-container>
-
-        </section>
         <section class="image-sec">
             <img class="exam-image" [src]="exam.image.url" [alt]="exam.image.name">
         </section>
+        <section class="info-sec">
+            <div class="sticker">
+                <span class="level">{{exam.level | titlecase}}</span>
+            </div>
+
+            <div class="text">
+                <h1 class="exam-name">
+                    {{exam.name}}
+                </h1>
+                <p class="exam-category"><strong>Exam Category</strong> {{exam.category}}</p>
+                <p class="exam-duration"><strong>Exam Duration</strong> {{exam.duration}} Minutes</p>
+                <p class="exam-passDegree"><strong>Pass Degree Percentage</strong> You must answer
+                    {{exam.passDegreePercentage}}% of questions correctly .</p>
+                <p class="exam-desc"><strong>Exam Description</strong> {{exam.description}}</p>
+                <div class="actions">
+                    <button routerLink="//{{ls.language}}/response/answer/{{exam.id}}" color="primary"
+                        mat-raised-button>Subscribe</button>
+                </div>
+            </div>
+
+
+
+        </section>
+
     </div>
 </ng-container>

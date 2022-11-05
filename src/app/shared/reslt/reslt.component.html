@@ -1,0 +1,36 @@
+<ng-container *ngIf="response">
+    <div class="fram">
+        <img src="/assets/images/fram.png" alt="">
+        <div class="result-wrapper">
+            <h1 class="exam-name">{{response.examName}}</h1>
+            <h3 class="user-name">{{response.userName}}</h3>
+            <p class="result-text">
+                {{resultMessage}}
+            </p>
+            <div class="row">
+                <div class="instructor-name">
+                    <strong>Instructor</strong>
+                    <span>{{response.instructor}}</span>
+                </div>
+                <div class="result-icon">
+                    <mat-icon>workspace_premium</mat-icon>
+                </div>
+                <div class="endtime-date">
+                    <strong>Date</strong>
+                    <span>{{response.endTime| date:'short'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #failed>
+        <div class="failed">
+            <p style="text-align: center;">{{resultMessage}}.</p>
+            <div class="footer" style="display: flex;margin-block-start: 2rem;">
+                <p>{{response.instructor}}</p>
+                <span class="spacer"></span>
+                <p>{{response.endTime | date:'short'}}</p>
+            </div>
+        </div>
+    </ng-template>
+</ng-container>

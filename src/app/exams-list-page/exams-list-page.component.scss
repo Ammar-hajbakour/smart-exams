@@ -1,4 +1,5 @@
 :host {
+
     .exams-list {
         margin-block-start: 1rem;
         display: grid;
@@ -6,6 +7,12 @@
         gap: 1rem;
 
         mat-card {
+
+            display: flex;
+            flex-flow: column;
+            justify-content: space-between;
+
+
             .actions {
 
                 button {
@@ -16,8 +23,7 @@
     }
 }
 
-.level {
+.level,
+.share {
     color: #ff4081;
-    font-size: 12px;
-    margin-inline-start: 1rem;
 }

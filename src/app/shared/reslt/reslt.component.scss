@@ -1,0 +1,106 @@
+:host {
+    padding: 0.5rem;
+    color: #808080;
+
+    .failed {
+        background: #ededed;
+        border: 1px solid lightgray;
+        padding: 2rem;
+    }
+
+    .fram {
+        position: relative;
+        min-width: 400px;
+        min-height: 400px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: relative;
+            filter: invert(0.5)
+        }
+
+        .result-wrapper {
+            width: 50%;
+            height: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: space-evenly;
+            align-items: center;
+
+            .exam-name {
+                font-size: 2rem;
+                font-weight: 600;
+            }
+
+            .user-name {
+                font-size: 1rem;
+                font-weight: 600;
+                line-height: 2;
+            }
+
+            .result-text {
+                text-align: center;
+            }
+
+            .row {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                margin-block: 2rem;
+
+                .mat-icon {
+                    transform: scale(3);
+                    margin-inline: 2rem;
+                }
+
+                .result-icon {
+                    text-align: center;
+                }
+
+                .instructor-name,
+                .endtime-date {
+                    text-align: center;
+                    display: flex;
+                    flex-flow: column nowrap;
+                    font-size: 12px;
+
+                    strong {
+                        font-size: 10px;
+                    }
+                }
+            }
+
+            @media (max-width: 567px) {
+
+                justify-content: center;
+                transform: translate(-50%, -40%);
+
+                .exam-name {
+                    font-size: .9rem;
+                }
+
+                .user-name,
+                .result-text {
+                    font-size: 80%;
+                }
+
+                .endtime-date span,
+                .instructor-name span {
+                    font-size: 60%;
+                }
+
+                .result-icon .mat-icon {
+                    transform: scale(1.5);
+                }
+            }
+        }
+    }
+
+
+}
