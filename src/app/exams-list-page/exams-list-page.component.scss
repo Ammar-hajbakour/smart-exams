@@ -6,17 +6,28 @@
         grid-template-columns: repeat(auto-fill, minmax(200px, 250px));
         gap: 1rem;
 
-        mat-card {
+        .exam-card {
+            text-decoration: none;
 
-            display: flex;
-            flex-flow: column;
-            justify-content: space-between;
+            mat-card {
+                display: flex;
+                flex-flow: column;
+                justify-content: space-between;
 
+                .mat-card-subtitle {
+                    margin: 0;
+                    margin-block-end: .5rem;
+                }
 
-            .actions {
+                .mat-card-content {
+                    font-size: 12px;
+                    text-align: justify;
+                }
 
-                button {
-                    margin-inline-end: .5rem !important;
+                .actions {
+                    button {
+                        margin-inline-end: .5rem !important;
+                    }
                 }
             }
         }

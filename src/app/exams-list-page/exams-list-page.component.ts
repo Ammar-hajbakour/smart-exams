@@ -13,17 +13,22 @@ import { ExamsService } from '../shared/exams.service';
 })
 export class ExamsListPageComponent implements OnInit {
 
-  constructor(public examsService: ExamsService, private router: Router, private ls: LanguageService) { }
+  constructor(public examsService: ExamsService, private router: Router, public ls: LanguageService) { }
 
   exams$: ReplaySubject<Exam[]> = new ReplaySubject(1)
 
   categories: Array<{ string: Exam[] }> = []
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-
-
+  total = 0
+  pageSize: number = 3
+  page: number = 1
   async ngOnInit() {
-    this.exams$.next(await this.examsService.getExams())
+    await this.getExams(this.page, this.pageSize)
+    this.total = await this.examsService.getExamsCount()
+  }
+  async getExams(page: number, pageSize: number) {
+    this.exams$.next(await this.examsService.getExams(page, pageSize))
+    console.log(page)
   }
   showDetails(examId: string) {
     this.router.navigate([`/${this.ls.language ?? this.ls.defaultLang}/exam/${examId}`])

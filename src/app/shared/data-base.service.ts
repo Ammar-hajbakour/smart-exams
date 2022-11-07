@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, doc, collectionData, deleteDoc, docData, updateDoc, query, where, limit, getDocs, WithFieldValue, DocumentData } from '@angular/fire/firestore';
-import { firstValueFrom } from 'rxjs';
+import { Firestore, collection, addDoc, doc, collectionData, deleteDoc, docData, updateDoc, query, where, limit, getDocs, WithFieldValue, DocumentData, startAt, orderBy, startAfter, getCountFromServer } from '@angular/fire/firestore';
+import { firstValueFrom, ReplaySubject } from 'rxjs';
 import { Exam, Question } from '../models/exam.model';
 import { ExamResponse } from '../models/response.model';
 
 export class DatabaseService {
+  count: ReplaySubject<number> = new ReplaySubject<number>(1);
 
   constructor(private store: Firestore, private collectionName: string) { }
 
@@ -28,9 +29,21 @@ export class DatabaseService {
   }
 
 
-  async list<T>(filter?: any): Promise<T[]> {
+
+  async list<T>(page?: number, pageSize?: number, filter?: any): Promise<T[]> {
     let ref = collection(this.store, this.collectionName);
-    return await firstValueFrom(collectionData(ref, { idField: 'id' })) as T[];
+    let q = query(ref)
+    const result = await firstValueFrom(collectionData(q, { idField: 'id' })) as T[]
+    const snapshot = await getCountFromServer(q);
+    this.count.next(snapshot.data().count)
+    if (page && pageSize) {
+      let start = page * pageSize
+      const currentList = [...result].splice(start - pageSize, pageSize)
+
+
+      return currentList
+    }
+    return result
   }
   async delete(id: string) {
     let ref = doc(this.store, `${this.collectionName}/${id}`);
@@ -45,3 +58,5 @@ export class DatabaseService {
     return { ...exam, id };
   }
 }
+
+

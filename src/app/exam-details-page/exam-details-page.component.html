@@ -3,25 +3,32 @@
         <section class="image-sec">
             <img class="exam-image" [src]="exam.image.url" [alt]="exam.image.name">
         </section>
+        <section class="title-sec">
+            <h1 class="exam-name">
+                {{exam.name}}
+            </h1>
+            <div class="actions">
+                <button routerLink="//{{ls.language}}/response/answer/{{exam.id}}" color="primary"
+                    mat-raised-button>Subscribe</button>
+            </div>
+        </section>
         <section class="info-sec">
-            <div class="sticker">
+            <!-- <div class="sticker">
                 <span class="level">{{exam.level | titlecase}}</span>
-            </div>
+            </div> -->
 
-            <div class="text">
-                <h1 class="exam-name">
-                    {{exam.name}}
-                </h1>
-                <p class="exam-category"><strong>Exam Category</strong> {{exam.category}}</p>
-                <p class="exam-duration"><strong>Exam Duration</strong> {{exam.duration}} Minutes</p>
-                <p class="exam-passDegree"><strong>Pass Degree Percentage</strong> You must answer
-                    {{exam.passDegreePercentage}}% of questions correctly .</p>
-                <p class="exam-desc"><strong>Exam Description</strong> {{exam.description}}</p>
-                <div class="actions">
-                    <button routerLink="//{{ls.language}}/response/answer/{{exam.id}}" color="primary"
-                        mat-raised-button>Subscribe</button>
-                </div>
-            </div>
+            <p class="exam-level"><strong>Exam Level</strong> {{exam.level}}</p>
+            <p class="exam-category"><strong>Exam Category</strong> {{exam.category}}</p>
+            <p class="exam-category"><strong>Exam Category</strong> {{exam.category}}</p>
+            <p class="exam-duration"><strong>Exam Duration</strong> {{exam.duration}} Minutes</p>
+            <p class="exam-passDegree"><strong>Pass Degree Percentage</strong> You must answer
+                {{exam.passDegreePercentage}}% of questions correctly .</p>
+            <p class="exam-desc"><strong>Exam Description</strong>
+                {{exam.description}}
+            </p>
+
+
+
 
 
 

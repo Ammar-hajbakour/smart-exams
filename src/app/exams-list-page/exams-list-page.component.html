@@ -1,24 +1,23 @@
 <app-filter></app-filter>
 <ng-container *ngIf="exams$ | async as exams;">
     <div class="exams-list">
-        <mat-card *ngFor="let exam of exams" class="exam-card">
+        <a routerLink="/{{ls.language}}/exam/{{exam.id}}" *ngFor="let exam of exams" class="exam-card">
+            <mat-card>
+                <mat-card-subtitle>{{exam.category}}</mat-card-subtitle>
+                <mat-card-title>{{exam.name | titlecase}}</mat-card-title>
+                <mat-card-subtitle class="level">{{exam.level | titlecase}}</mat-card-subtitle>
+                <mat-card-content>
+                    {{exam.description?.slice(0,100)}}...
+                </mat-card-content>
+                <!-- <div class="actions">
+                            <button (click)="showDetails(exam.id)" mat-raised-button>Details</button>
+                            <button class="share" mat-raised-button>Share</button>
+                        </div> -->
+            </mat-card>
+        </a>
 
-            <mat-card-subtitle>{{exam.category}}
-            </mat-card-subtitle>
-            <mat-card-subtitle class="level">{{exam.level |
-                titlecase}}</mat-card-subtitle>
-            <h2 style="display: flex;">{{exam.name}}</h2>
-
-            <mat-card-content>
-                {{exam.description?.slice(0,100)}}...
-            </mat-card-content>
-            <div class="actions">
-                <button (click)="showDetails(exam.id)" mat-raised-button>Details</button>
-                <button class="share" mat-raised-button>Share</button>
-            </div>
-        </mat-card>
     </div>
-
+    <paginator [total]="total" (pageChange)="getExams($event,pageSize)" [pageSize]="pageSize"></paginator>
 </ng-container>
 <ng-template *ngIf="exams$ | async as exam">
     <div class="error-message" *ngIf="!exam">

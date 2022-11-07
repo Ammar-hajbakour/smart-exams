@@ -10,6 +10,7 @@ import { TimerComponent } from './timer/timer.component';
 import { UserMenuComponent } from './user-menu/user-menu.component';
 import { RouterModule } from '@angular/router';
 import { ResltComponent } from './reslt/reslt.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 const imports = [CommonModule,
   TranslationModule,
@@ -18,7 +19,7 @@ const imports = [CommonModule,
   RouterModule,
   ...MatrialCommon]
 
-const declarations = [ResponsesListComponent, ExamsListComponent, ResltComponent, TimerComponent, UserMenuComponent]
+const declarations = [ResponsesListComponent, ExamsListComponent, ResltComponent, TimerComponent, UserMenuComponent, PaginatorComponent]
 @NgModule({
   declarations: [...declarations],
   imports: [...imports],

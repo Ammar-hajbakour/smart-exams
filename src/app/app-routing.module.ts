@@ -8,11 +8,12 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { ExamGuard } from "./ExamGuard";
 import { SimpleLayoutComponent } from './simple-layout/simple-layout.component';
 import { ResponseGuard } from './simple-layout/response.guard';
+import { InstructorGuard } from './instructor.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/en', pathMatch: 'full' },
   { path: ':lang/account', loadChildren: () => import('./features/membership/membership.module').then(m => m.MembershipModule) },
-  { path: ':lang/instructor', canActivateChild: [ExamGuard], loadChildren: () => import('./features/instructor-space/instructor-space.module').then(m => m.InstructorSpaceModule) },
+  { path: ':lang/instructor', canActivateChild: [InstructorGuard], loadChildren: () => import('./features/instructor-space/instructor-space.module').then(m => m.InstructorSpaceModule) },
   { path: ':lang/admin', canActivateChild: [AdminGuard], loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule) },
   { path: ':lang/student', canActivateChild: [StudentGuard], loadChildren: () => import('./features/student/student.module').then(m => m.StudentModule) },
   { path: ':lang/response', canActivateChild: [ResponseGuard], loadChildren: () => import('./features/response/response.module').then(m => m.ResponsesModule) },
