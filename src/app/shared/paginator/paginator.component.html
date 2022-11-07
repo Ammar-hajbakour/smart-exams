@@ -1,5 +1,5 @@
 <div>
-  <button *ngIf="canGoPrev" (click)="changePage(page - 1)">
+  <button mat-icon-button *ngIf="canGoPrev" (click)="changePage(page - 1)">
     <mat-icon>
       {{dir === 'rtl' ? 'navigate_next' : 'navigate_before'}}
     </mat-icon>
@@ -7,11 +7,13 @@
 </div>
 
 <div class="numbers">
-  <button [class.active]="p === page" *ngFor="let p of pagesBtns" (click)="changePage(p)">{{p}}</button>
+  <button mat-icon-button [class.active]="p === page" *ngFor="let p of pagesBtns" (click)="changePage(p)">
+    <span class="mat-icon">{{p}}</span>
+  </button>
 </div>
 
 <div>
-  <button *ngIf="canGoNext" (click)="changePage(page + 1)">
+  <button mat-icon-button *ngIf="canGoNext" (click)="changePage(page + 1)">
     <mat-icon>
       {{dir === 'rtl' ? 'navigate_before' : 'navigate_next'}}
     </mat-icon>
