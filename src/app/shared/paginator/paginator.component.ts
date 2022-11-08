@@ -38,7 +38,7 @@ export class PaginatorComponent implements OnInit {
 
 
 
-  private _pageSize: number = 1;
+  private _pageSize: number = 3;
   @Input()
   public get pageSize(): number {
     return this._pageSize;

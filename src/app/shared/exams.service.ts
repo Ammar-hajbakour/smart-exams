@@ -29,7 +29,12 @@ export class ExamsService {
   async getExamsCount() {
     return await firstValueFrom(this.database.count)
   }
-
+  async getCategories() {
+    return await firstValueFrom(this.database.categories)
+  }
+  async getInstructors() {
+    return await firstValueFrom(this.database.instructors)
+  }
 
 
 

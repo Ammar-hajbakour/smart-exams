@@ -1,25 +1,32 @@
-<form>
+<form #filterForm="ngForm" (submit)="submit(filterForm)">
     <!-- <mat-form-field class="search" appearance="outline">
         <mat-label>Search by name</mat-label>
         <input matInput>
     </mat-form-field> -->
-    <mat-form-field appearance="outline">
+    <mat-form-field>
         <mat-label>Instructor</mat-label>
-        <mat-select multiple>
-            <mat-option *ngFor="let instructor of instructors" [value]="instructor">{{instructor | titlecase}}
+        <mat-select [(ngModel)]="selectedFilter.instructor" name="instructor">
+            <mat-option>Not selected</mat-option>
+            <mat-option *ngFor="let instructor of instructors" [value]="instructor">{{instructor |
+                titlecase}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="selectedFilter.category" name="category">
+            <mat-option>Not selected</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category">{{category |titlecase}}
             </mat-option>
         </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Category</mat-label>
-        <mat-select multiple>
-            <mat-option *ngFor="let category of categories" [value]="category">{{category | titlecase}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
         <mat-label>Level</mat-label>
-        <mat-select multiple>
-            <mat-option *ngFor="let l of level" [value]="l">{{l | titlecase}}</mat-option>
+        <mat-select [(ngModel)]="selectedFilter.level" name="level">
+            <mat-option>Not selected</mat-option>
+            <mat-option *ngFor="let l of level" [value]="l">
+                {{l |
+                titlecase}}
+            </mat-option>
         </mat-select>
     </mat-form-field>
 
@@ -27,6 +34,8 @@
         <mat-checkbox class="example-margin">Hidden</mat-checkbox>
         <mat-checkbox class="example-margin">Active</mat-checkbox>
     </section> -->
-
+    <!-- <select [(ngModel)]="model">
+        <option *ngFor="let item of list" [value]="item">{{item}}</option>
+    </select> -->
     <button color="primary" mat-button type="submit">Apply Filter</button>
 </form>
