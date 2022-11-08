@@ -10,7 +10,7 @@ export class PaginatorComponent implements OnInit {
   @Input() dir: 'ltr' | 'rtl' = 'ltr'
   @Output() pageChange = new EventEmitter<number>()
 
-  private _page = 1;
+  private _page!: number;
   @Input()
   public get page(): number {
     return this._page;
@@ -25,7 +25,7 @@ export class PaginatorComponent implements OnInit {
   canGoNext = false;
   canGoPrev = false;
 
-  private _total = 0;
+  private _total!: number;
   @Input()
   public get total(): number {
     return this._total;
@@ -38,7 +38,7 @@ export class PaginatorComponent implements OnInit {
 
 
 
-  private _pageSize: number = 3;
+  private _pageSize!: number;
   @Input()
   public get pageSize(): number {
     return this._pageSize;
@@ -46,7 +46,7 @@ export class PaginatorComponent implements OnInit {
   public set pageSize(v: number) {
     if (v === this._pageSize) return
     this._pageSize = v;
-    this._rerenderBtns(this.total)
+    this._rerenderBtns(this._total)
   }
 
 
@@ -67,13 +67,13 @@ export class PaginatorComponent implements OnInit {
 
   private _rerendering: any
   private _rerenderBtns(total: number) {
-    if (total <= this.pageSize) return
+
     if (this._rerendering) clearTimeout(this._rerendering)
     this._rerendering = setTimeout(() => {
 
       total = isNaN(total) ? 0 : total
       const ps = isNaN(this.pageSize) ? 1 : this.pageSize
-      const totalPages = Math.ceil(total / ps)
+      const totalPages = total <= ps ? 0 : Math.ceil(total / ps)
 
 
       let nopiv = Math.min((isNaN(this.noOfPagesInView) || this.noOfPagesInView === 0) ? 5 : this.noOfPagesInView, totalPages)
@@ -97,6 +97,8 @@ export class PaginatorComponent implements OnInit {
 
   ngOnInit(): void {
     this._rerenderBtns(this.total)
+    console.log(this.total);
+
   }
 
   changePage(p: number) {

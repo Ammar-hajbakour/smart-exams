@@ -1,5 +1,5 @@
+<app-filter [categories]="categories" [instructors]="instructors" (filter)="applyFilter($event)"></app-filter>
 <ng-container *ngIf="exams$ | async as exams;">
-    <app-filter [categories]="categories" [instructors]="instructors" (filter)="applyFilter($event)"></app-filter>
     <div class="exams-list">
         <a routerLink="/{{ls.language}}/exam/{{exam.id}}" *ngFor="let exam of exams" class="exam-card">
             <mat-card>
@@ -15,16 +15,15 @@
                         </div> -->
             </mat-card>
         </a>
-
     </div>
-    <ng-container *ngIf="total$|async as total">
-        <paginator [total]="total" (pageChange)="getExams($event,pageSize)" [dir]="dir">
-        </paginator>
-        {{total}}
-    </ng-container>
 </ng-container>
 <ng-template *ngIf="exams$ | async as exam">
     <div class="error-message" *ngIf="!exam">
         There is no exams
     </div>
 </ng-template>
+<ng-container *ngIf="total$|async as total">
+    <paginator [total]="total" (pageChange)="getExams($event,pageSize,filter)" [dir]="dir" [page]="page"
+        [pageSize]="pageSize">
+    </paginator>
+</ng-container>
