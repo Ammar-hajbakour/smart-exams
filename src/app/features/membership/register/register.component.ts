@@ -39,7 +39,8 @@ export class RegisterComponent implements OnInit {
 
   async submit() {
     const user = this.userForm.value
-
+    user.name = user.name.toLocaleLowerCase()
+    user.email = user.email.toLocaleLowerCase()
     const password = user.password
     if (user.password !== user.confirmPassword) {
       this.snackBar.open('Error!, Password Comfirming faild', 'Registration', this.duration)

@@ -1,0 +1,11 @@
+<div class="search">
+    <mat-radio-group (change)="search.by = $event.value" #s aria-label="Select an option">
+        <mat-label>Search By</mat-label>
+        <mat-radio-button value="examName" checked>Exam Name</mat-radio-button>
+        <mat-radio-button value="userName">User Name</mat-radio-button>
+    </mat-radio-group>
+    <mat-form-field appearance="outline">
+        <mat-label>Type search text</mat-label>
+        <input type="text" #qInput (input)="_change($event)" matInput>
+    </mat-form-field>
+</div>

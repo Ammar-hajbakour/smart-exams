@@ -4,8 +4,9 @@ export class Exam {
     id!: string
     image!: { name: string, url: string }
     constructor(public instructorId: string, public name: string) { }
-    instructorName!: string
+    instructor!: string
     description!: string
+    shortDescription!: string
     questions: Question[] = []
     category: string = ''
     duration: number = 120
@@ -15,7 +16,7 @@ export class Exam {
     level: 'basic' | 'medium' | 'advanced' = 'basic'
     answerInstructions!: string
     calcStrategy!: PointsCalculationStrategy
-
+    normalizeName!: string
 
     shuffle: boolean = false
     show1by1: boolean = false

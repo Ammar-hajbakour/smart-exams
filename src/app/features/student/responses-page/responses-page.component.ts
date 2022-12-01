@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, switchMap } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs';
 import { ExamResponse } from 'src/app/models/response.model';
 import { ExamResponsesService } from 'src/app/shared/exam-responses.service';
 import { ActionDescriptor } from 'src/app/shared/exams-list/exams-list.component';
@@ -12,7 +12,9 @@ import { AuthService } from '../../membership/services/auth.service';
 })
 export class ResponsesPageComponent {
   // actions = ['view', 'result', 'continue']
-  data$ = this.auth.user$.pipe(switchMap(user => this.responseService.listUserResponses<Partial<ExamResponse>>(user.id)))
+  // data$ = this.auth.user$.pipe(switchMap(user => this.responseService.listUserResponses<Partial<ExamResponse>>(user.id)))
+  data!: ExamResponse[];
+  data$ = this.auth.user$.pipe(switchMap(user => this.responseService.getResponses({ user: user.id })), tap(res => this.data = res.dataRes))
 
   actions = [
     { name: 'view', text: 'View', icon: 'wysiwyg', variant: 'button' } as ActionDescriptor,

@@ -38,7 +38,7 @@ export class ExamFormComponent implements OnInit {
 
   async submit(form: NgForm) {
     if (form.invalid) return
-    const v = { ...this.model, instructorName: this.auth.user.name }
+    const v = { ...this.model, instructorName: this.auth.user.name, normalizeName: this.model.name?.toLocaleLowerCase() } as Exam
     const id = await this.examsService.save(this.model.id, v).then(x => x.id)
     this.dialogRef.close({ ...v, id })
   }

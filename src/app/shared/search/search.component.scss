@@ -1,0 +1,24 @@
+:host {
+
+    .search {
+        display: grid;
+        gap: 1rem;
+
+        mat-radio-group {
+            mat-label {
+                margin-inline-end: 1rem;
+                font-weight: 500;
+            }
+
+            mat-radio-button {
+                margin-inline-end: 1rem;
+                // margin-block-start: 1rem;
+                font-size: 10pt;
+            }
+        }
+
+        mat-form-field {
+            max-width: 280px;
+        }
+    }
+}

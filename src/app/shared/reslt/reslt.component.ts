@@ -14,6 +14,7 @@ export class ResltComponent implements OnInit {
     console.log(this.response.result);
 
     const passed = this.response.result >= this.response.passDegreePercentage
+    this.response.isPassed = passed
     if (passed) {
       this.resultMessage = `Congrats! You have successfully passed the exam and answered ${this.response.result}% of the questions correctly`
     }

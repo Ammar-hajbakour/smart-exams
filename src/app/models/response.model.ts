@@ -3,6 +3,7 @@ export class ExamResponse {
 
     instructor!: string
     examName!: string
+    normalizeName!: string
     userName!: string
     constructor(public userId: string, public examId: string, instructorId: string) { }
 
@@ -13,6 +14,6 @@ export class ExamResponse {
     endTime: number | null = null
 
     result: number = 0
-
+    isPassed!: boolean
     passDegreePercentage!: number
 }

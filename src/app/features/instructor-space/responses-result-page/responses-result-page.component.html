@@ -1,0 +1,20 @@
+<div class="responses" *ngIf="data$|async">
+    <app-search (change)="search($event)"></app-search>
+
+    <table mat-table [dataSource]="data" class="mat-elevation-z8">
+
+        <ng-container *ngFor="let col of columns" [matColumnDef]="col.display">
+            <th mat-header-cell *matHeaderCellDef> {{col.display}} </th>
+            <td mat-cell *matCellDef="let element"> {{col.display == 'Date' ?
+                (element[col.prop] | date:'short')
+                :
+                element[col.prop] }}</td>
+
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <button *ngIf="canLoadMore" (click)="loadMore()" mat-button color="accent">Load more..</button>
+</div>

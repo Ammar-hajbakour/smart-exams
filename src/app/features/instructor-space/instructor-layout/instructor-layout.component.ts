@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LanguageService } from '@upupa/language';
 
 @Component({
   selector: 'app-instructor-layout',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InstructorLayoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(public ls: LanguageService) { }
 
   ngOnInit(): void {
   }

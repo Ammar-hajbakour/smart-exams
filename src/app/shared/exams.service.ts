@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, doc, setDoc, collectionData, deleteDoc, docData, updateDoc, query, where, orderBy, startAt, limit, getDocs, startAfter } from '@angular/fire/firestore';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable, Subject, Subscription } from 'rxjs';
 import { Exam, Question } from '../models/exam.model';
 import { Filter } from '../models/filter.model';
 import { DatabaseService } from './data-base.service';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,31 +27,28 @@ export class ExamsService {
   async update(id: string, exam: Partial<Exam>) {
     return this.database.update(id, exam)
   }
-  async getExamsCount() {
-    return await firstValueFrom(this.database.count)
-  }
-  async getCategories() {
-    return await firstValueFrom(this.database.categories)
-  }
-  async getInstructors() {
-    return await firstValueFrom(this.database.instructors)
-  }
 
 
-
-
-  async getExams(page?: number, pageSize?: number, filter?: Filter): Promise<Exam[]> {
-    return this.database.list<Exam>(page, pageSize, filter)
+  find(item: string, array: Array<any>) {
+    let itemsArray: string[] = []
+    array.forEach(i => {
+      itemsArray.push(i[`${item}`])
+    })
+    return [... new Set(itemsArray)]
   }
-  async listP<Exam>(page: number, pageSize: number, filter?: any): Promise<Exam[]> {
+  async getFilterOptions(...options: any[]) {
     let ref = collection(this.store, this.collectionName);
-    let start = pageSize * (page)
-    let q = query(ref, orderBy("name"), startAfter(start), limit(pageSize))
-    const res = await firstValueFrom(collectionData(q, { idField: 'id' })) as Exam[];
-
-    console.log("Result From Database Service :", res)
-    return res
+    let result = await firstValueFrom(collectionData(ref, { idField: 'id' })) as Exam[]
+    options.forEach((option: { key: string, value: string[] }) => {
+      option.value = this.find(option.key, result)
+    })
   }
+
+
+  async getExams(filter?: Filter, next?: boolean, dataLimit?: number): Promise<{ dataCount: number, dataRes: Exam[] }> {
+    return await this.database.list<Exam>(this.collectionName, filter, next, dataLimit)
+  }
+
   async deleteExam(id: string) {
     return this.database.delete(id)
   }

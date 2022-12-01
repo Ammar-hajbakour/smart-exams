@@ -3,6 +3,15 @@
     flex-flow: column;
     height: 100%;
 
+    .menu-icon {
+        margin-inline-end: 1rem;
+        width: 40px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
     .container {
         padding: 1rem;
     }
@@ -12,21 +21,31 @@
         flex-flow: row nowrap;
         align-items: center;
 
-        &.cp-links>.cp-link {
+        &.links a {
+            display: inline-block;
+            padding-inline: .75rem;
 
 
             &.active {
-                color: pink;
-
+                color: #444;
+                background: #eee;
+                border-radius: 20px;
             }
 
-            margin-inline-end: 1rem;
+            &:hover:not(.active) {
+                color: rgb(196, 196, 196);
+            }
+
+            margin-inline-end: .25rem;
+            font-size: 12pt;
             color: white;
             text-decoration: none;
-            transition: color 0.25s ease-in;
+            transition: all 0.2s ease-in-out;
         }
 
     }
+
+
 
     footer {
         background: lightblue;

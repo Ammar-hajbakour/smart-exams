@@ -32,7 +32,7 @@ export class InstructorExamsPageComponent implements OnInit {
     public dialog: MatDialog, private auth: AuthService) { }
 
   async ngOnInit(): Promise<void> {
-    const _exams = await this.examsService.getExams()
+    const _exams = (await this.examsService.getExams()).dataRes
     this.exams.next(_exams)
 
   }
@@ -43,7 +43,7 @@ export class InstructorExamsPageComponent implements OnInit {
   async addOrEditExam(examId?: string) {
     const result = await firstValueFrom(this.dialog.open(ExamFormComponent, {
       width: '95%',
-      maxWidth: '500px',
+      maxWidth: '700px',
 
       disableClose: true,
       data: { instructorId: this.auth.user.id, examId }

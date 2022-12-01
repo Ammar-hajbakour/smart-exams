@@ -80,7 +80,36 @@ body {
 }
 
 .mat-drawer-container {
+  display: flex;
+  flex-flow: column;
   height: 100%;
+
+  .mat-drawer {
+    width: 200px;
+    max-width: 200px;
+  }
+}
+
+.cp-links {
+
+  a {
+    text-decoration: none;
+    color: gray;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+
+    .mat-icon {
+      margin-inline-end: 0.5rem;
+    }
+
+    &:hover,
+    &.active {
+      background: #fafafa;
+      color: #444
+    }
+  }
 }
 
 app-collector {
@@ -93,6 +122,9 @@ app-collector {
   }
 }
 
-.mat-drawer {
-  padding: 1rem;
+.mat-radio-container,
+.mat-radio-inner-circle,
+.mat-radio-outer-circle {
+  width: 15px !important;
+  height: 15px !important;
 }

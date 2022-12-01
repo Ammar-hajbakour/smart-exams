@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, doc, collectionData, deleteDoc, docData, updateDoc, query, where, limit, getDocs, WithFieldValue, DocumentData, startAt, orderBy, startAfter, getCountFromServer } from '@angular/fire/firestore';
-import { BehaviorSubject, firstValueFrom, ReplaySubject } from 'rxjs';
+import { Firestore, collection, addDoc, doc, collectionData, deleteDoc, docData, updateDoc, query, where, limit, getDocs, WithFieldValue, DocumentData, startAt, orderBy, startAfter, getCountFromServer, endAt, getDoc, QueryConstraint } from '@angular/fire/firestore';
+import { BehaviorSubject, firstValueFrom, Observable, ReplaySubject, Subject } from 'rxjs';
 import { Exam, Question } from '../models/exam.model';
 import { Filter } from '../models/filter.model';
 import { ExamResponse } from '../models/response.model';
-
 export class DatabaseService {
-  count: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  instructors: ReplaySubject<string[]> = new ReplaySubject(1);
-  categories: ReplaySubject<string[]> = new ReplaySubject(1);
 
   constructor(private store: Firestore, private collectionName: string) { }
 
@@ -31,47 +27,51 @@ export class DatabaseService {
     return entity
   }
 
-  find(items: string, array: Array<any>) {
-    let itemsArray: string[] = []
-    array.forEach(i => {
-      itemsArray.push(i[`${items}`])
-    })
-    return [... new Set(itemsArray)]
-  }
+  filters: QueryConstraint[] = [orderBy('normalizeName')]
+  lastVisible: any
+  result: any
+  async list<T>(collectionName: string = 'exams', filter?: Filter, next: boolean = false, dataLimit: number = 1): Promise<{ dataCount: number, dataRes: T[] }> {
+    let ref = collection(this.store, collectionName);
 
-  async list<T>(page?: number, pageSize?: number, filter?: Filter): Promise<T[]> {
-    let ref = collection(this.store, this.collectionName);
-    let q = query(ref)
-    let result = await firstValueFrom(collectionData(q, { idField: 'id' })) as T[]
-    if (filter) {
-      if (filter.category) {
-        q = query(ref, where('category', '==', filter.category))
-        result = await firstValueFrom(collectionData(q, { idField: 'id' })) as T[]
-      }
-      if (filter.instructor) {
-        q = query(ref, where('instructor', '==', filter.instructor))
-        result = await firstValueFrom(collectionData(q, { idField: 'id' })) as T[]
-      }
-      if (filter.level) {
-        q = query(ref, where('level', '==', filter.level))
-        result = await firstValueFrom(collectionData(q, { idField: 'id' })) as T[]
-      }
+
+    const f = [...this.filters]
+    console.log(next);
+
+    // if (filter?.q && filter.q !== '') f.push(startAt(filter.q), endAt(filter.q + '\uf8ff'))
+    switch (filter?.q?.by) {
+      case 'examName':
+        f.length = 0
+        f.unshift(orderBy('normalizeName'))
+        f.push(startAt(filter.q.text), endAt(filter.q.text + '\uf8ff'))
+        break
+
+      case 'userName':
+
+        f.length = 0
+        f.unshift(orderBy('userName'))
+        f.push(startAt(filter.q.text), endAt(filter.q.text + '\uf8ff'))
+        break
     }
 
-    this.instructors.next(this.find('instructorName', result))
-    this.categories.next(this.find('category', result))
-
-    const snapshot = await getCountFromServer(q);
-    this.count.next(snapshot.data().count)
-    if (page && pageSize) {
-      let start = page * pageSize
-      let currentList = [...result].splice(start - pageSize, pageSize)
+    if (filter?.level) f.push(where('level', '==', filter.level))
+    if (filter?.category) f.push(where('category', '==', filter.category))
+    if (filter?.instructor) f.push(where('instructorId', '==', filter.instructor))
+    if (filter?.user) f.push(where('userId', '==', filter.user))
 
 
-      return currentList
+    if (next) {
+      this.lastVisible = this.result.docs[this.result.docs.length - 1];
+      if (this.lastVisible) f.push(startAfter(this.lastVisible))
     }
-    return result
+    let q = query(ref, ...f, limit(dataLimit))
+
+    this.result = await getDocs(q);
+    const dataRes = await firstValueFrom(collectionData(q, { idField: 'id' })) as unknown as T[]
+    const dataCount = (await getCountFromServer(query(ref, ...f))).data().count;
+    console.log(dataCount, this.lastVisible);
+    return { dataCount, dataRes }
   }
+
   async delete(id: string) {
     let ref = doc(this.store, `${this.collectionName}/${id}`);
     return await deleteDoc(ref);

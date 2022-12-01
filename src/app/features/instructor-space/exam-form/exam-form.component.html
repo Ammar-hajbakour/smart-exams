@@ -22,9 +22,15 @@
                     min="0" max="100">
             </mat-form-field>
             <mat-form-field appearance="legacy">
+                <mat-label>Short Description</mat-label>
+                <input name="shortDescription [(ngModel)]=" model.shortDescription matInput max="170"
+                    placeholder="170 characters to describe this exam and make it appear in search engines">
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
                 <mat-label>Exam Description</mat-label>
                 <textarea name="description" [(ngModel)]="model.description" matInput rows="3"></textarea>
             </mat-form-field>
+
             <mat-form-field appearance="legacy">
                 <mat-label>Answer Instructions</mat-label>
                 <textarea name="answerInstructions" [(ngModel)]="model.answerInstructions" matInput rows="3"></textarea>

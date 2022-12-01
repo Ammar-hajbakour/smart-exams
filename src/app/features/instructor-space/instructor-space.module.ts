@@ -7,6 +7,7 @@ import { InstructorLayoutComponent } from './instructor-layout/instructor-layout
 import { InstructorExamsPageComponent } from './instructor-exams-page/instructor-exams-page.component';
 import { ExamFormComponent } from './exam-form/exam-form.component';
 import { ExamBuilderComponent } from './exam-builder/exam-builder.component';
+import { ResponsesResultPageComponent } from './responses-result-page/responses-result-page.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ExamBuilderComponent } from './exam-builder/exam-builder.component';
     InstructorLayoutComponent,
     InstructorExamsPageComponent,
     ExamFormComponent,
-    ExamBuilderComponent
+    ExamBuilderComponent,
+    ResponsesResultPageComponent
   ],
   imports: [
     SharedModule,

@@ -11,6 +11,7 @@ import { UserMenuComponent } from './user-menu/user-menu.component';
 import { RouterModule } from '@angular/router';
 import { ResltComponent } from './reslt/reslt.component';
 import { PaginatorComponent } from './paginator/paginator.component';
+import { SearchComponent } from './search/search.component';
 
 const imports = [CommonModule,
   TranslationModule,
@@ -19,7 +20,7 @@ const imports = [CommonModule,
   RouterModule,
   ...MatrialCommon]
 
-const declarations = [ResponsesListComponent, ExamsListComponent, ResltComponent, TimerComponent, UserMenuComponent, PaginatorComponent]
+const declarations = [ResponsesListComponent, ExamsListComponent, ResltComponent, TimerComponent, UserMenuComponent, PaginatorComponent, SearchComponent]
 @NgModule({
   declarations: [...declarations],
   imports: [...imports],

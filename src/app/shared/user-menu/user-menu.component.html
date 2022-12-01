@@ -3,17 +3,29 @@
 
 
     <mat-menu #menu="matMenu">
-        <a routerLink="/{{ls.language}}/instructor" *ngIf="_user.roles.indexOf('instructor') > -1" mat-menu-item>
-            <mat-icon>dialpad</mat-icon>
-            <span>My space</span>
-        </a>
-        <a routerLink="/{{ls.language}}/student/my-responses" *ngIf="_user.roles.length === 0" mat-menu-item>
+        <ng-container *ngIf="_user.roles&&_user.roles?.indexOf('instructor') > -1">
+            <a routerLink="/{{ls.language}}/instructor" mat-menu-item>
+                <mat-icon>dialpad</mat-icon>
+                <span>My space</span>
+            </a>
+
+            <a routerLink="/{{ls.language}}/instructor/responses-result" mat-menu-item>
+                <mat-icon>people</mat-icon>
+                <span>Responses</span>
+            </a>
+        </ng-container>
+
+        <a routerLink="/{{ls.language}}/student/my-responses" mat-menu-item>
             <mat-icon>voicemail</mat-icon>
             <span>My Responses</span>
         </a>
-        <button (click)="auth.logout()" mat-menu-item>
+        <a routerLink="/{{ls.language}}/home" mat-menu-item>
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+        </a>
+        <button (click)="logout()" mat-menu-item>
             <mat-icon>notifications_off</mat-icon>
-            <span>Sign out</span>
+            <span>Log out</span>
         </button>
     </mat-menu>
 </ng-container>

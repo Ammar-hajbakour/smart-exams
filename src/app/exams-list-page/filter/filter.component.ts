@@ -8,7 +8,6 @@ import { Filter } from 'src/app/models/filter.model';
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
-  @Input() instructors: string[] = []
   @Input() categories: string[] = []
   @Output() filter = new EventEmitter<Filter>()
   selectedFilter: Filter = { category: '', instructor: '', level: '' }

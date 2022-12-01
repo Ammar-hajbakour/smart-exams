@@ -10,8 +10,14 @@
 <mat-drawer-container class="example-container">
     <mat-drawer #drawer [mode]="'side'" [opened]="true">
         <div class="cp-links">
-            <a class="cp-link" routerLink="./exams" [routerLinkActive]="'active'">My Exams</a>
-            <a class="cp-link" routerLink="./students" [routerLinkActive]="'active'">My Exams</a>
+            <a routerLink="/{{ls.language}}/home" [routerLinkActive]="'active'" mat-menu-item>
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+            </a>
+            <a routerLink="/{{ls.language}}/exams" [routerLinkActive]="'active'" mat-menu-item>
+                <mat-icon>quiz</mat-icon>
+                <span>Exams</span>
+            </a>
         </div>
     </mat-drawer>
     <mat-drawer-content>

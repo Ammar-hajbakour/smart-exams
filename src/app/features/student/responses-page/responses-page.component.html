@@ -1,2 +1,4 @@
-<app-responses-list [data]="data$ | async" [actions]="actions" (elementAction)="handleUserAction($event)">
-</app-responses-list>
+<ng-container *ngIf="data$|async">
+    <app-responses-list [data]="data" [actions]="actions" (elementAction)="handleUserAction($event)">
+    </app-responses-list>
+</ng-container>

@@ -38,8 +38,9 @@ export class CollectorComponent {
       }
       else {
         this.response = new ExamResponse(this.auth.user.id, this.exam.id, this.exam.instructorId)
-        this.response.instructor = this.exam.instructorName
+        this.response.instructor = this.exam.instructor
         this.response.examName = this.exam.name
+        this.response.normalizeName = this.exam.normalizeName
         this.response.userName = this.auth.user.name
         this.exam.questions.forEach(q => this.response.answers[q.id] = [])
 

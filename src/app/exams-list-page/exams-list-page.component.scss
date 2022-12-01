@@ -3,7 +3,8 @@
     .exams-list {
         margin-block-start: 1rem;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 250px));
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
         gap: 1rem;
 
         .exam-card {
@@ -22,6 +23,7 @@
                 .mat-card-content {
                     font-size: 12px;
                     text-align: justify;
+
                 }
 
                 .actions {

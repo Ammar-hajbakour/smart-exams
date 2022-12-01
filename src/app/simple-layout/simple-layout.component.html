@@ -1,13 +1,10 @@
 <mat-toolbar color="primary">
-    <button mat-icon-button (click)="drawer.toggle()" class="example-icon"
-        aria-label="Example icon-button with menu icon">
+    <button (click)="drawer.toggle()" class="menu-icon" aria-label="Example icon-button with menu icon">
         <mat-icon>menu</mat-icon>
     </button>
     <span>My App</span>
     <span class="spacer"></span>
-    <div class="cp-links flex-row">
-        <a class="cp-link" routerLink="/{{ls.language}}/home" [routerLinkActive]="'active'">Home</a>
-        <a class="cp-link" routerLink="/{{ls.language}}/exams" [routerLinkActive]="'active'">Exams</a>
+    <div class="links flex-row">
         <app-user-menu *ngIf="auth.user$ | async; else userNav"></app-user-menu>
         <ng-template #userNav>
             <a class="cp-link" routerLink="/{{ls.language}}/account/login" [routerLinkActive]="'active'">Login</a>
@@ -16,12 +13,26 @@
     </div>
 </mat-toolbar>
 <mat-drawer-container class="example-container">
-    <mat-drawer #drawer [mode]="'side'" [opened]="false">
+    <mat-drawer #drawer [mode]="'side'" [opened]="true">
         <div class="cp-links">
-            <a class="cp-link" routerLink="/{{ls.language}}/home" [routerLinkActive]="'active'">Home</a>
-            <a class="cp-link" routerLink="/{{ls.language}}/exams" [routerLinkActive]="'active'">Exams</a>
-            <a class="cp-link" routerLink="/{{ls.language}}/account/login" [routerLinkActive]="'active'">Login</a>
-            <a class="cp-link" routerLink="/{{ls.language}}/account/register" [routerLinkActive]="'active'">Register</a>
+            <a routerLink="/{{ls.language}}/home" [routerLinkActive]="'active'">
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+            </a>
+            <a routerLink="/{{ls.language}}/exams" [routerLinkActive]="'active'">
+                <mat-icon>quiz</mat-icon>
+                <span>Exams</span>
+            </a>
+            <ng-container *ngIf="!auth.user">
+                <a routerLink="/{{ls.language}}/account/login" [routerLinkActive]="'active'">
+                    <mat-icon>logout</mat-icon>
+                    <span>Login</span>
+                </a>
+                <a routerLink="/{{ls.language}}/account/register" [routerLinkActive]="'active'">
+                    <mat-icon>app_registration</mat-icon>
+                    <span>Register</span>
+                </a>
+            </ng-container>
         </div>
     </mat-drawer>
     <mat-drawer-content>
